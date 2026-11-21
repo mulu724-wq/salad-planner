@@ -56,12 +56,10 @@
   .head { text-align: center; padding: 20px 0 0; }
   .head h1 {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Noto Sans KR', sans-serif;
-    font-size: clamp(30px, 8vw, 46px); line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; text-wrap: balance;
+    font-size: clamp(22px, 6vw, 36px); line-height: 1.2; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-wrap: balance;
     color: var(--burgundy);
   }
 
-  .account { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
-  .account .who { overflow-wrap: anywhere; }
   .link-btn { background: none; border: 0; padding: 8px 0; min-height: 44px; cursor: pointer; color: var(--burgundy); font-size: 14px; font-weight: 500; }
   .link-btn:hover { text-decoration: underline; }
 
@@ -74,13 +72,9 @@
   .panel { border-radius: var(--radius); padding: 24px 22px; display: flex; flex-direction: column; gap: 16px; }
   .panel p { font-size: 15px; color: var(--muted); }
   .panel code { font-size: 13px; background: rgba(94,107,58,0.12); padding: 1px 6px; border-radius: 6px; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 14px; font-weight: 500; }
-  .field input[type="email"] { min-height: 50px; padding: 8px 16px; border: 1px solid var(--line); background: rgba(255,255,255,0.85); border-radius: 14px; font-size: 16px; }
 
   .msg { font-size: 14px; color: var(--muted); text-align: center; overflow-wrap: anywhere; }
   .msg:empty { display: none; }
-  #view-auth .section-title { text-align: center; }
   .msg.error { color: var(--burgundy); font-weight: 500; }
 
   .summary { display: flex; flex-wrap: wrap; gap: 14px; }
@@ -167,26 +161,14 @@
     <p>Supabase 연결 값이 비어 있습니다. 이 파일 아래쪽 스크립트의 <code>SUPABASE_URL</code>과 <code>SUPABASE_PUBLISHABLE_KEY</code>에 Project URL과 publishable 키를 붙여 넣은 뒤 다시 배포해 주세요.</p>
   </section>
 
-  <!-- 로그인 -->
-  <section id="view-auth" aria-labelledby="t-auth" hidden>
-    <h2 class="section-title" id="t-auth">로그인</h2>
-    <form class="panel glass" id="login-form" novalidate>
-      <p>이메일 주소를 입력하면 로그인 링크를 보내 드립니다. 메일의 링크를 누르면 이 화면으로 돌아와 내 목록이 열립니다.</p>
-      <div class="field">
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required>
-      </div>
-      <button type="submit" class="cta" id="btn-login">로그인 메일 받기</button>
-    </form>
+  <!-- 연결 실패 -->
+  <section id="view-conn" class="panel glass" hidden>
+    <p id="conn-text">서버에 연결하지 못했습니다.</p>
+    <button type="button" class="cta" id="btn-retry">다시 시도</button>
   </section>
 
   <!-- 앱 -->
   <div id="view-app" hidden style="display:flex;flex-direction:column;gap:36px;">
-
-    <div class="account">
-      <span class="who" id="who"></span>
-      <button type="button" class="link-btn" id="btn-logout">로그아웃</button>
-    </div>
 
     <section aria-labelledby="t-summary">
       <h2 class="section-title" id="t-summary">이번 주 요약</h2>
@@ -328,7 +310,7 @@ function say(text, isError) {
 
 function showView(name) {
   $('view-config').hidden = name !== 'config';
-  $('view-auth').hidden = name !== 'auth';
+  $('view-conn').hidden = name !== 'conn';
   $('view-app').hidden = name !== 'app';
   $('view-detail').hidden = name !== 'detail';
 }
@@ -520,7 +502,7 @@ function render(focusId) {
     '<span class="qty">' + fmtQty(it.qty) + esc(it.unit) + '</span></label></li>'
   ).join('');
 
-  $('note').textContent = '체크와 추천 결과는 로그인한 계정에 저장되어, 다시 열어도 이번 주 목록이 그대로 보입니다.';
+  $('note').textContent = '체크와 추천 결과는 이 브라우저에 연결되어 저장됩니다. 다시 열어도 이번 주 목록이 그대로 보이지만, 브라우저 데이터를 지우거나 다른 기기에서 열면 새로 시작됩니다.';
 
   if (state.detailId) renderDetail();
 
@@ -574,17 +556,31 @@ function closeDetail() {
 
 /* ---------------- 로그인 ---------------- */
 
+/* 로그인 화면 없이, 방문한 브라우저마다 익명 계정을 자동으로 만들어 쓴다 */
+let signingIn = false;
+async function ensureSession() {
+  if (signingIn) return;
+  signingIn = true;
+  showView('app'); render(); say('연결하는 중입니다.');
+  const { error } = await sb.auth.signInAnonymously();
+  signingIn = false;
+  if (error) {
+    say('');
+    $('conn-text').textContent = '서버에 연결하지 못했습니다: ' + error.message +
+      ' (Supabase의 Authentication > Sign In / Providers에서 Anonymous Sign-Ins가 켜져 있는지 확인해 주세요.)';
+    showView('conn');
+  }
+  /* 성공하면 onAuthStateChange의 SIGNED_IN에서 이어진다 */
+}
+
 async function handleSession(session) {
   const user = session && session.user ? session.user : null;
-  const sameUser = (state.user && user && state.user.id === user.id) || (!state.user && !user);
-  if (state.started && sameUser) return;
+  if (!user) { state.user = null; state.started = false; ensureSession(); return; }
+  if (state.started && state.user && state.user.id === user.id) return;
   state.started = true;
   state.user = user;
   state.recipes = []; state.plan = []; state.items = []; state.loaded = false; state.detailId = null;
 
-  if (!user) { showView('auth'); render(); return; }
-
-  $('who').textContent = user.email || '';
   applyView(); render(); say('');
   try {
     await loadAll();
@@ -592,27 +588,6 @@ async function handleSession(session) {
     say('목록을 불러오지 못했습니다: ' + (e.message || e), true);
   }
   render();
-}
-
-async function sendLink(ev) {
-  ev.preventDefault();
-  const email = $('email').value.trim();
-  if (!email) { say('이메일 주소를 입력해 주세요.', true); $('email').focus(); return; }
-  const btn = $('btn-login');
-  btn.disabled = true; say('로그인 메일을 보내는 중입니다.');
-  const { error } = await sb.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: window.location.origin + window.location.pathname }
-  });
-  btn.disabled = false;
-  if (error) say('메일을 보내지 못했습니다: ' + error.message, true);
-  else say(email + ' 로 로그인 링크를 보냈습니다. 메일함(스팸함 포함)에서 링크를 눌러 주세요.');
-}
-
-async function logout() {
-  const { error } = await sb.auth.signOut();
-  if (error) say('로그아웃하지 못했습니다: ' + error.message, true);
-  else say('');
 }
 
 /* ---------------- 시작 ---------------- */
@@ -649,8 +624,7 @@ if (!configured || !window.supabase) {
   if (configured && !window.supabase) say('Supabase 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.', true);
 } else {
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-  $('login-form').addEventListener('submit', sendLink);
-  $('btn-logout').addEventListener('click', logout);
+  $('btn-retry').addEventListener('click', () => { signingIn = false; ensureSession(); });
   $('btn-recommend').addEventListener('click', () => {
     if (state.loaded && state.recipes.length === 0) insertSamples();
     else recommend();
