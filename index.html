@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주간 샐러드 플래너</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --cream: #F3EADB;
+    --paper: #FAF5EA;
+    --sage: #A9B9A5;
+    --chamomile: #E2B65A;
+    --olive: #5E6B3A;
+    --burgundy: #6A2A3B;
+    --text: #2B2A24;
+    --muted: #5A5848;
+    --line: rgba(94, 107, 58, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  h1, h2, h3, p, ul, ol { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+  button, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--burgundy); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+
+  .app { max-width: 560px; margin: 0 auto; padding: 40px 20px 72px; display: flex; flex-direction: column; gap: 36px; }
+
+  .head { display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 1px solid var(--olive); }
+  .head .kicker { font-size: 13px; letter-spacing: 0.06em; color: var(--muted); }
+  .head h1 { font-size: 30px; line-height: 1.25; font-weight: 700; color: var(--burgundy); }
+
+  .account { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  .account .who { overflow-wrap: anywhere; }
+  .link-btn { background: none; border: 0; padding: 8px 0; min-height: 44px; cursor: pointer; color: var(--burgundy); text-decoration: underline; font-size: 14px; }
+
+  .section-title { font-size: 13px; letter-spacing: 0.06em; color: var(--olive); font-weight: 600; margin-bottom: 12px; }
+
+  .panel { background: var(--paper); border: 1px solid var(--line); padding: 20px 18px; display: flex; flex-direction: column; gap: 14px; }
+  .panel p { font-size: 15px; color: var(--muted); }
+  .panel code { font-size: 13px; background: var(--cream); padding: 1px 6px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 14px; font-weight: 500; }
+  .field input[type="email"] { min-height: 48px; padding: 8px 12px; border: 1px solid var(--olive); background: #fff; border-radius: 0; font-size: 16px; }
+
+  .msg { font-size: 14px; min-height: 1.65em; color: var(--muted); }
+  .msg.error { color: var(--burgundy); font-weight: 500; }
+
+  .summary { display: flex; flex-wrap: wrap; gap: 12px; }
+  .stat { flex: 1 1 140px; background: var(--paper); border: 1px solid var(--line); padding: 16px 18px; display: flex; flex-direction: column; gap: 2px; }
+  .stat .label { font-size: 13px; color: var(--muted); }
+  .stat .value { font-size: 28px; line-height: 1.3; font-weight: 700; color: var(--burgundy); }
+  .stat .value small { font-size: 15px; font-weight: 500; color: var(--muted); }
+  .week { font-size: 14px; color: var(--muted); margin-top: 10px; }
+
+  .cta {
+    width: 100%; min-height: 56px; border: 0; cursor: pointer;
+    background: var(--burgundy); color: var(--paper);
+    font-size: 18px; font-weight: 600; padding: 14px 20px;
+  }
+  .cta:hover:not(:disabled) { background: #561f2e; }
+  .cta:active:not(:disabled) { transform: translateY(1px); }
+  .cta:disabled { opacity: 0.55; cursor: default; }
+  .cta.secondary { background: var(--olive); }
+  .cta.secondary:hover:not(:disabled) { background: #4c582f; }
+
+  .cards { display: flex; flex-direction: column; gap: 12px; }
+  .empty { background: var(--paper); border: 1px dashed var(--olive); padding: 28px 20px; text-align: center; color: var(--muted); font-size: 15px; }
+  .card { background: var(--paper); border: 1px solid var(--line); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .card.done { background: #E3EADF; border-color: var(--olive); }
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .day { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: var(--olive); }
+  .card h3 { font-size: 18px; line-height: 1.4; font-weight: 600; }
+  .meta { font-size: 14px; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 13px; padding: 2px 10px; background: var(--sage); color: var(--text); }
+  .src { font-size: 14px; }
+  .src a { color: var(--burgundy); }
+
+  .check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-size: 15px; user-select: none; }
+  .check input { width: 22px; height: 22px; accent-color: var(--burgundy); cursor: pointer; margin: 0; }
+
+  .shop-count { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+  .list { background: var(--paper); border: 1px solid var(--line); }
+  .list:empty { display: none; }
+  .list li { border-bottom: 1px solid var(--line); }
+  .list li:last-child { border-bottom: 0; }
+  .row { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 16px; cursor: pointer; }
+  .row input { width: 22px; height: 22px; accent-color: var(--burgundy); cursor: pointer; margin: 0; flex: 0 0 auto; }
+  .row .name { flex: 1 1 auto; font-size: 16px; }
+  .row .qty { flex: 0 0 auto; font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row.bought .name, .row.bought .qty { color: var(--muted); text-decoration: line-through; }
+
+  .note { font-size: 13px; line-height: 1.7; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+</head>
+<body>
+<main class="app">
+
+  <header class="head">
+    <span class="kicker">내 불편 기획</span>
+    <h1>주간 샐러드 플래너</h1>
+  </header>
+
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+  <!-- 설정 누락 안내 -->
+  <section id="view-config" class="panel" hidden>
+    <p>Supabase 연결 값이 비어 있습니다. 이 파일 아래쪽 스크립트의 <code>SUPABASE_URL</code>과 <code>SUPABASE_PUBLISHABLE_KEY</code>에 Project URL과 publishable 키를 붙여 넣은 뒤 다시 배포해 주세요.</p>
+  </section>
+
+  <!-- 로그인 -->
+  <section id="view-auth" aria-labelledby="t-auth" hidden>
+    <h2 class="section-title" id="t-auth">로그인</h2>
+    <form class="panel" id="login-form" novalidate>
+      <p>이메일 주소를 입력하면 로그인 링크를 보내 드립니다. 메일의 링크를 누르면 이 화면으로 돌아와 내 목록이 열립니다.</p>
+      <div class="field">
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required>
+      </div>
+      <button type="submit" class="cta" id="btn-login">로그인 메일 받기</button>
+    </form>
+  </section>
+
+  <!-- 앱 -->
+  <div id="view-app" hidden style="display:flex;flex-direction:column;gap:36px;">
+
+    <div class="account">
+      <span class="who" id="who"></span>
+      <button type="button" class="link-btn" id="btn-logout">로그아웃</button>
+    </div>
+
+    <section aria-labelledby="t-summary">
+      <h2 class="section-title" id="t-summary">이번 주 요약</h2>
+      <div class="summary">
+        <div class="stat"><span class="label">먹은 끼니</span><span class="value" id="stat-eaten">0<small> / 0</small></span></div>
+        <div class="stat"><span class="label">산 재료</span><span class="value" id="stat-bought">0<small> / 0</small></span></div>
+      </div>
+      <p class="week" id="week-label"></p>
+    </section>
+
+    <section aria-label="추천">
+      <button type="button" class="cta" id="btn-recommend">이번 주 추천받기</button>
+    </section>
+
+    <section aria-labelledby="t-cards">
+      <h2 class="section-title" id="t-cards">요일별 샐러드</h2>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <section aria-labelledby="t-shop">
+      <h2 class="section-title" id="t-shop">장보기 체크리스트</h2>
+      <p class="shop-count" id="shop-count"></p>
+      <ul class="list" id="shop-list"></ul>
+    </section>
+
+    <p class="note" id="note"></p>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ------------------------------------------------------------------
+   Supabase 연결 값 (아래 두 줄만 채우면 됩니다)
+   - SUPABASE_URL: Project URL (https://xxxx.supabase.co)
+   - SUPABASE_PUBLISHABLE_KEY: publishable 키 (secret / service_role 키는 넣지 않는다)
+------------------------------------------------------------------- */
+const SUPABASE_URL = 'https://hposmyqlhvvzjwpuvduz.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_OthP3HTcr_-REP2MYVCbPw_rnIh7P-K';
+
+/* 레시피 테이블이 비어 있을 때 한 번 넣을 수 있는 샘플 10개.
+   직접 정리한 30개는 Supabase의 recipes 테이블에 넣거나, 아래 배열을 바꿔서 넣으면 된다. */
+const SEED = [
+  { name: '닭가슴살 퀴노아 샐러드', minutes: 15, ingredients: [
+      { name: '조리된 닭가슴살', qty: 100, unit: 'g' }, { name: '익힌 퀴노아', qty: 80, unit: 'g' },
+      { name: '방울토마토', qty: 6, unit: '개' }, { name: '오이', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '렌틸콩 참치 샐러드', minutes: 10, ingredients: [
+      { name: '삶은 렌틸콩', qty: 100, unit: 'g' }, { name: '참치캔', qty: 0.5, unit: '개' },
+      { name: '적양파', qty: 0.25, unit: '개' }, { name: '파프리카', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '병아리콩 페타 샐러드', minutes: 10, ingredients: [
+      { name: '삶은 병아리콩', qty: 100, unit: 'g' }, { name: '페타치즈', qty: 40, unit: 'g' },
+      { name: '오이', qty: 0.5, unit: '개' }, { name: '방울토마토', qty: 6, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '훈제연어 아보카도 샐러드', minutes: 15, ingredients: [
+      { name: '훈제연어', qty: 80, unit: 'g' }, { name: '아보카도', qty: 0.5, unit: '개' },
+      { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '오이', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '달걀 시저 샐러드', minutes: 15, ingredients: [
+      { name: '달걀', qty: 2, unit: '개' }, { name: '로메인', qty: 80, unit: 'g' },
+      { name: '파마산치즈', qty: 15, unit: 'g' }, { name: '시저 드레싱', qty: 2, unit: '큰술' } ] },
+  { name: '두부 에다마메 샐러드', minutes: 15, ingredients: [
+      { name: '두부', qty: 100, unit: 'g' }, { name: '냉동 에다마메', qty: 50, unit: 'g' },
+      { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 5, unit: '개' },
+      { name: '간장', qty: 1, unit: '큰술' }, { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '구운 새우 아보카도 샐러드', minutes: 20, ingredients: [
+      { name: '냉동 새우', qty: 100, unit: 'g' }, { name: '어린잎채소', qty: 60, unit: 'g' },
+      { name: '방울토마토', qty: 6, unit: '개' }, { name: '아보카도', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '렌틸콩 시금치 페타 샐러드', minutes: 15, ingredients: [
+      { name: '삶은 렌틸콩', qty: 100, unit: 'g' }, { name: '시금치', qty: 60, unit: 'g' },
+      { name: '페타치즈', qty: 40, unit: 'g' }, { name: '적양파', qty: 0.25, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '닭가슴살 병아리콩 샐러드', minutes: 15, ingredients: [
+      { name: '조리된 닭가슴살', qty: 100, unit: 'g' }, { name: '삶은 병아리콩', qty: 80, unit: 'g' },
+      { name: '로메인', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 6, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '퀴노아 훈제연어 샐러드', minutes: 15, ingredients: [
+      { name: '익힌 퀴노아', qty: 80, unit: 'g' }, { name: '훈제연어', qty: 80, unit: 'g' },
+      { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '오이', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] }
+];
+
+const DAYS = ['월', '화', '수', '목', '금'];
+const MEALS_PER_WEEK = 5;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtQty = (n) => String(Math.round(Number(n) * 100) / 100);
+const pad = (n) => String(n).padStart(2, '0');
+
+/* 주 시작일(월요일): 일요일에 열면 곧 시작되는 월요일, 그 외에는 이번 주 월요일 */
+function weekStart(today) {
+  const d = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const dow = d.getDay();
+  d.setDate(d.getDate() + (dow === 0 ? 1 : -(dow - 1)));
+  return d;
+}
+const WEEK = weekStart(new Date());
+const WEEK_KEY = WEEK.getFullYear() + '-' + pad(WEEK.getMonth() + 1) + '-' + pad(WEEK.getDate());
+
+/* 화면 상태 */
+const state = { user: null, recipes: [], plan: [], items: [], busy: false, loaded: false };
+
+const configured = SUPABASE_URL.indexOf('https://') === 0 && SUPABASE_PUBLISHABLE_KEY.indexOf('여기에') === -1 && SUPABASE_PUBLISHABLE_KEY.length > 20;
+let sb = null;
+
+function say(text, isError) {
+  const el = $('msg');
+  el.textContent = text || '';
+  el.className = 'msg' + (isError ? ' error' : '');
+}
+
+function showView(name) {
+  $('view-config').hidden = name !== 'config';
+  $('view-auth').hidden = name !== 'auth';
+  $('view-app').hidden = name !== 'app';
+}
+
+/* ---------------- 데이터 처리 ---------------- */
+
+/* 카드에 보여줄 주요 재료: 양념(큰술 단위)을 뺀 앞의 3개 */
+function mainIngredients(recipe) {
+  const list = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
+  return list.filter((i) => i.unit !== '큰술').slice(0, 3).map((i) => i.name);
+}
+
+function pickRecipes(pool, count) {
+  const a = pool.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, count);
+}
+
+/* 선택한 레시피의 재료를 이름+단위 기준으로 합산 */
+function buildShopping(recipes) {
+  const map = new Map();
+  recipes.forEach((r) => (Array.isArray(r.ingredients) ? r.ingredients : []).forEach((ing) => {
+    const key = ing.name + '|' + ing.unit;
+    if (map.has(key)) map.get(key).qty += Number(ing.qty);
+    else map.set(key, { name: ing.name, unit: ing.unit, qty: Number(ing.qty) });
+  }));
+  return Array.from(map.values());
+}
+
+async function loadAll() {
+  const [r, p, s] = await Promise.all([
+    sb.from('recipes').select('*').order('created_at', { ascending: true }),
+    sb.from('weekly_plans').select('id, weekday, recipe_id, eaten').eq('week_start', WEEK_KEY).order('weekday', { ascending: true }),
+    sb.from('shopping_items').select('id, name, qty, unit, purchased').eq('week_start', WEEK_KEY).order('name', { ascending: true })
+  ]);
+  const err = r.error || p.error || s.error;
+  if (err) throw err;
+  state.recipes = r.data || [];
+  state.plan = (p.data || [])
+    .map((row) => ({ id: row.id, weekday: row.weekday, eaten: row.eaten, recipe: state.recipes.find((x) => x.id === row.recipe_id) }))
+    .filter((x) => x.recipe);
+  state.items = (s.data || []).map((row) => ({ id: row.id, name: row.name, qty: Number(row.qty), unit: row.unit, purchased: row.purchased }));
+  state.loaded = true;
+}
+
+/* 기능 1: 추천받기 -> 5끼 계획과 합산 장보기 목록을 저장 */
+async function recommend() {
+  if (state.busy) return;
+  if (state.recipes.length < MEALS_PER_WEEK) {
+    say('레시피가 ' + MEALS_PER_WEEK + '개 이상 있어야 추천할 수 있습니다.', true);
+    return;
+  }
+  state.busy = true; render(); say('추천을 만들고 저장하는 중입니다.');
+  try {
+    const picked = pickRecipes(state.recipes, MEALS_PER_WEEK);
+    const items = buildShopping(picked);
+
+    let res = await sb.from('weekly_plans').delete().eq('week_start', WEEK_KEY);
+    if (res.error) throw res.error;
+    res = await sb.from('shopping_items').delete().eq('week_start', WEEK_KEY);
+    if (res.error) throw res.error;
+
+    res = await sb.from('weekly_plans').insert(
+      picked.map((r, i) => ({ week_start: WEEK_KEY, weekday: i + 1, recipe_id: r.id, eaten: false }))
+    );
+    if (res.error) throw res.error;
+    res = await sb.from('shopping_items').insert(
+      items.map((it) => ({ week_start: WEEK_KEY, name: it.name, qty: it.qty, unit: it.unit, purchased: false }))
+    );
+    if (res.error) throw res.error;
+
+    await loadAll();
+    say('이번 주 5끼를 저장했습니다.');
+  } catch (e) {
+    say('저장하지 못했습니다: ' + (e.message || e), true);
+    try { await loadAll(); } catch (_) { /* 무시 */ }
+  } finally {
+    state.busy = false; render();
+  }
+}
+
+/* 기능 2: 먹음 체크 저장 */
+async function setEaten(planId, value) {
+  const entry = state.plan.find((x) => x.id === planId);
+  if (!entry) return;
+  const before = entry.eaten;
+  entry.eaten = value; render(planId);
+  const { error } = await sb.from('weekly_plans').update({ eaten: value }).eq('id', planId);
+  if (error) { entry.eaten = before; render(planId); say('먹음 체크를 저장하지 못했습니다: ' + error.message, true); }
+  else say('');
+}
+
+/* 기능 3: 구매 체크 저장 */
+async function setPurchased(itemId, value) {
+  const item = state.items.find((x) => x.id === itemId);
+  if (!item) return;
+  const before = item.purchased;
+  item.purchased = value; render(itemId);
+  const { error } = await sb.from('shopping_items').update({ purchased: value }).eq('id', itemId);
+  if (error) { item.purchased = before; render(itemId); say('구매 체크를 저장하지 못했습니다: ' + error.message, true); }
+  else say('');
+}
+
+async function insertSamples() {
+  if (state.busy) return;
+  state.busy = true; render(); say('샘플 레시피를 넣는 중입니다.');
+  try {
+    const { error } = await sb.from('recipes').insert(SEED.map((r) => ({
+      name: r.name, minutes: r.minutes, ingredients: r.ingredients
+    })));
+    if (error) throw error;
+    await loadAll();
+    say('샘플 레시피 ' + SEED.length + '개를 넣었습니다.');
+  } catch (e) {
+    say('넣지 못했습니다: ' + (e.message || e), true);
+  } finally {
+    state.busy = false; render();
+  }
+}
+
+/* ---------------- 화면 그리기 ---------------- */
+
+function render(focusId) {
+  $('week-label').textContent = (WEEK.getMonth() + 1) + '월 ' + WEEK.getDate() + '일 월요일 시작 주';
+
+  const hasPlan = state.plan.length > 0;
+  const noRecipes = state.loaded && state.recipes.length === 0;
+
+  const btn = $('btn-recommend');
+  btn.disabled = state.busy || !state.loaded;
+  if (noRecipes) {
+    btn.textContent = '샘플 레시피 ' + SEED.length + '개 넣기';
+    btn.classList.add('secondary');
+  } else {
+    btn.textContent = hasPlan ? '다시 추천받기' : '이번 주 추천받기';
+    btn.classList.remove('secondary');
+  }
+
+  const cards = $('cards');
+  if (!state.loaded) {
+    cards.innerHTML = '<div class="empty">불러오는 중입니다.</div>';
+  } else if (noRecipes) {
+    cards.innerHTML = '<div class="empty">저장된 레시피가 없습니다. 위 버튼으로 샘플을 넣거나, Supabase의 recipes 테이블에 직접 입력해 주세요.</div>';
+  } else if (!hasPlan) {
+    cards.innerHTML = '<div class="empty">"이번 주 추천받기"를 누르면 5끼가 여기에 나옵니다.</div>';
+  } else {
+    cards.innerHTML = state.plan.map((e) => {
+      const r = e.recipe;
+      const url = r.source_url && /^https?:\/\//.test(r.source_url) ? r.source_url : '';
+      const src = url
+        ? '<p class="src">영감 출처: <a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(r.source_name || '원문 보기') + '</a></p>'
+        : '';
+      return '<article class="card' + (e.eaten ? ' done' : '') + '">' +
+        '<div class="card-top"><span class="day">' + (DAYS[e.weekday - 1] || '') + '요일</span>' +
+        '<label class="check"><input type="checkbox" data-eaten="' + esc(e.id) + '"' + (e.eaten ? ' checked' : '') + '>먹음</label></div>' +
+        '<h3>' + esc(r.name) + '</h3>' +
+        '<p class="meta">조리 ' + esc(r.minutes) + '분</p>' +
+        '<div class="tags">' + mainIngredients(r).map((m) => '<span class="tag">' + esc(m) + '</span>').join('') + '</div>' +
+        src + '</article>';
+    }).join('');
+  }
+
+  const eatenCount = state.plan.filter((e) => e.eaten).length;
+  const boughtCount = state.items.filter((it) => it.purchased).length;
+  $('stat-eaten').innerHTML = eatenCount + '<small> / ' + state.plan.length + '</small>';
+  $('stat-bought').innerHTML = boughtCount + '<small> / ' + state.items.length + '</small>';
+
+  $('shop-count').textContent = state.items.length
+    ? '5끼 재료를 합산한 목록입니다.'
+    : '추천을 받으면 5끼 재료가 합산되어 여기에 나옵니다.';
+  $('shop-list').innerHTML = state.items.map((it) =>
+    '<li><label class="row' + (it.purchased ? ' bought' : '') + '">' +
+    '<input type="checkbox" data-bought="' + esc(it.id) + '"' + (it.purchased ? ' checked' : '') + '>' +
+    '<span class="name">' + esc(it.name) + '</span>' +
+    '<span class="qty">' + fmtQty(it.qty) + esc(it.unit) + '</span></label></li>'
+  ).join('');
+
+  $('note').textContent = '체크와 추천 결과는 로그인한 계정에 저장되어, 다시 열어도 이번 주 목록이 그대로 보입니다.';
+
+  /* 다시 그린 뒤에도 키보드 포커스 유지 */
+  if (focusId) {
+    const el = document.querySelector('input[data-eaten="' + focusId + '"], input[data-bought="' + focusId + '"]');
+    if (el) el.focus();
+  }
+}
+
+/* ---------------- 로그인 ---------------- */
+
+async function handleSession(session) {
+  const user = session && session.user ? session.user : null;
+  const sameUser = (state.user && user && state.user.id === user.id) || (!state.user && !user);
+  if (state.started && sameUser) return;
+  state.started = true;
+  state.user = user;
+  state.recipes = []; state.plan = []; state.items = []; state.loaded = false;
+
+  if (!user) { showView('auth'); render(); return; }
+
+  $('who').textContent = user.email || '';
+  showView('app'); render(); say('');
+  try {
+    await loadAll();
+  } catch (e) {
+    say('목록을 불러오지 못했습니다: ' + (e.message || e), true);
+  }
+  render();
+}
+
+async function sendLink(ev) {
+  ev.preventDefault();
+  const email = $('email').value.trim();
+  if (!email) { say('이메일 주소를 입력해 주세요.', true); $('email').focus(); return; }
+  const btn = $('btn-login');
+  btn.disabled = true; say('로그인 메일을 보내는 중입니다.');
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: window.location.origin + window.location.pathname }
+  });
+  btn.disabled = false;
+  if (error) say('메일을 보내지 못했습니다: ' + error.message, true);
+  else say(email + ' 로 로그인 링크를 보냈습니다. 메일함(스팸함 포함)에서 링크를 눌러 주세요.');
+}
+
+async function logout() {
+  const { error } = await sb.auth.signOut();
+  if (error) say('로그아웃하지 못했습니다: ' + error.message, true);
+  else say('');
+}
+
+/* ---------------- 시작 ---------------- */
+
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (!t.dataset) return;
+  if (t.dataset.eaten) setEaten(t.dataset.eaten, t.checked);
+  else if (t.dataset.bought) setPurchased(t.dataset.bought, t.checked);
+});
+
+if (!configured || !window.supabase) {
+  showView('config');
+  if (configured && !window.supabase) say('Supabase 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.', true);
+} else {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  $('login-form').addEventListener('submit', sendLink);
+  $('btn-logout').addEventListener('click', logout);
+  $('btn-recommend').addEventListener('click', () => {
+    if (state.loaded && state.recipes.length === 0) insertSamples();
+    else recommend();
+  });
+  /* 콜백 안에서 바로 Supabase를 호출하면 교착이 생길 수 있어 다음 틱으로 넘긴다 */
+  sb.auth.onAuthStateChange((_event, session) => { setTimeout(() => handleSession(session), 0); });
+}
+</script>
+</body>
+</html>
