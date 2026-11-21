@@ -237,45 +237,72 @@ const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_OthP3HTcr_-REP2MYVCbPw_rnIh7P-K
 /* 레시피 테이블이 비어 있을 때 한 번 넣을 수 있는 샘플 10개.
    직접 정리한 30개는 Supabase의 recipes 테이블에 넣거나, 아래 배열을 바꿔서 넣으면 된다. */
 const SEED = [
-  { name: '닭가슴살 퀴노아 샐러드', minutes: 15, ingredients: [
+  { name: '닭가슴살 퀴노아 샐러드', minutes: 15, steps_summary: "1. 방울토마토는 반으로 자르고, 오이는 얇게 반달 모양으로 썬다.\n2. 조리된 닭가슴살은 한입 크기로 찢거나 썬다.\n3. 올리브유와 레몬즙을 섞어 드레싱을 만든다.\n4. 그릇에 퀴노아를 깔고 닭가슴살, 방울토마토, 오이를 올린 뒤 드레싱을 뿌린다.", ingredients: [
       { name: '조리된 닭가슴살', qty: 100, unit: 'g' }, { name: '익힌 퀴노아', qty: 80, unit: 'g' },
       { name: '방울토마토', qty: 6, unit: '개' }, { name: '오이', qty: 0.5, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
-  { name: '렌틸콩 참치 샐러드', minutes: 10, ingredients: [
+  { name: '렌틸콩 참치 샐러드', minutes: 10, steps_summary: "1. 참치는 체에 받쳐 기름을 충분히 뺀다.\n2. 적양파는 얇게 썰어 찬물에 5분쯤 담갔다가 물기를 빼고, 파프리카는 잘게 썬다.\n3. 올리브유와 식초를 섞어 드레싱을 만든다.\n4. 렌틸콩, 참치, 채소를 그릇에 담고 드레싱에 버무린다.", ingredients: [
       { name: '삶은 렌틸콩', qty: 100, unit: 'g' }, { name: '참치캔', qty: 0.5, unit: '개' },
       { name: '적양파', qty: 0.25, unit: '개' }, { name: '파프리카', qty: 0.5, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
-  { name: '병아리콩 페타 샐러드', minutes: 10, ingredients: [
+  { name: '병아리콩 페타 샐러드', minutes: 10, steps_summary: "1. 오이는 깍둑썰기하고, 방울토마토는 반으로 자른다.\n2. 병아리콩은 체에 받쳐 물기를 뺀다.\n3. 페타치즈는 손으로 부수거나 작게 깍둑썬다.\n4. 모든 재료를 그릇에 담고 올리브유와 레몬즙을 뿌려 가볍게 섞는다. 페타치즈가 짠 편이라 소금은 따로 넣지 않는다.", ingredients: [
       { name: '삶은 병아리콩', qty: 100, unit: 'g' }, { name: '페타치즈', qty: 40, unit: 'g' },
       { name: '오이', qty: 0.5, unit: '개' }, { name: '방울토마토', qty: 6, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
-  { name: '훈제연어 아보카도 샐러드', minutes: 15, ingredients: [
+  { name: '훈제연어 아보카도 샐러드', minutes: 15, steps_summary: "1. 어린잎채소는 씻어 물기를 털고 접시에 깐다.\n2. 아보카도는 씨를 빼고 얇게 썰고, 오이는 얇게 어슷썬다.\n3. 잎채소 위에 아보카도, 오이, 훈제연어를 올린다.\n4. 올리브유와 레몬즙을 섞어 위에 뿌린다.", ingredients: [
       { name: '훈제연어', qty: 80, unit: 'g' }, { name: '아보카도', qty: 0.5, unit: '개' },
       { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '오이', qty: 0.5, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
-  { name: '달걀 시저 샐러드', minutes: 15, ingredients: [
+  { name: '달걀 시저 샐러드', minutes: 15, steps_summary: "1. 달걀은 끓는 물에 10분쯤 삶아 찬물에 식힌 뒤, 껍질을 벗겨 반으로 자른다.\n2. 로메인은 한입 크기로 뜯어 물기를 완전히 털어 낸다.\n3. 그릇에 로메인과 시저 드레싱을 넣고 버무린다.\n4. 달걀을 올리고 파마산치즈를 갈거나 얇게 뿌린다.", ingredients: [
       { name: '달걀', qty: 2, unit: '개' }, { name: '로메인', qty: 80, unit: 'g' },
       { name: '파마산치즈', qty: 15, unit: 'g' }, { name: '시저 드레싱', qty: 2, unit: '큰술' } ] },
-  { name: '두부 에다마메 샐러드', minutes: 15, ingredients: [
+  { name: '두부 에다마메 샐러드', minutes: 15, steps_summary: "1. 에다마메는 끓는 물에 2~3분 데치거나 실온에서 해동한 뒤 물기를 뺀다.\n2. 두부는 키친타월로 물기를 닦고 깍둑썬다.\n3. 간장, 올리브유, 식초를 섞어 소스를 만든다.\n4. 어린잎채소 위에 두부, 에다마메, 반으로 자른 방울토마토를 올리고 소스를 뿌린다.", ingredients: [
       { name: '두부', qty: 100, unit: 'g' }, { name: '냉동 에다마메', qty: 50, unit: 'g' },
       { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 5, unit: '개' },
       { name: '간장', qty: 1, unit: '큰술' }, { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
-  { name: '구운 새우 아보카도 샐러드', minutes: 20, ingredients: [
+  { name: '구운 새우 아보카도 샐러드', minutes: 20, steps_summary: "1. 냉동 새우는 찬물에 담가 해동하고 키친타월로 물기를 닦는다.\n2. 올리브유 절반을 달군 팬에 두르고, 새우를 앞뒤로 2~3분씩 익을 때까지 굽는다.\n3. 아보카도는 얇게 썰고, 방울토마토는 반으로 자른다.\n4. 어린잎채소 위에 새우, 아보카도, 방울토마토를 올리고 남은 올리브유와 레몬즙을 뿌린다.", ingredients: [
       { name: '냉동 새우', qty: 100, unit: 'g' }, { name: '어린잎채소', qty: 60, unit: 'g' },
       { name: '방울토마토', qty: 6, unit: '개' }, { name: '아보카도', qty: 0.5, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
-  { name: '렌틸콩 시금치 페타 샐러드', minutes: 15, ingredients: [
+  { name: '렌틸콩 시금치 페타 샐러드', minutes: 15, steps_summary: "1. 시금치는 씻어 물기를 털고, 큰 잎은 먹기 좋게 자른다. 어린 샐러드용이 아니면 끓는 물에 10초쯤 데쳐 물기를 짠다.\n2. 적양파는 얇게 썰어 찬물에 5분쯤 담갔다가 건진다.\n3. 렌틸콩은 물기를 빼고, 페타치즈는 손으로 부순다.\n4. 올리브유와 식초를 섞어 모든 재료와 가볍게 버무린다.", ingredients: [
       { name: '삶은 렌틸콩', qty: 100, unit: 'g' }, { name: '시금치', qty: 60, unit: 'g' },
       { name: '페타치즈', qty: 40, unit: 'g' }, { name: '적양파', qty: 0.25, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
-  { name: '닭가슴살 병아리콩 샐러드', minutes: 15, ingredients: [
+  { name: '닭가슴살 병아리콩 샐러드', minutes: 15, steps_summary: "1. 로메인은 한입 크기로 뜯어 물기를 털고, 방울토마토는 반으로 자른다.\n2. 조리된 닭가슴살은 결대로 찢고, 병아리콩은 물기를 뺀다.\n3. 올리브유와 식초를 섞어 드레싱을 만든다.\n4. 재료를 그릇에 담고 드레싱을 뿌려 섞는다.", ingredients: [
       { name: '조리된 닭가슴살', qty: 100, unit: 'g' }, { name: '삶은 병아리콩', qty: 80, unit: 'g' },
       { name: '로메인', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 6, unit: '개' },
       { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
-  { name: '퀴노아 훈제연어 샐러드', minutes: 15, ingredients: [
+  { name: '퀴노아 훈제연어 샐러드', minutes: 15, steps_summary: "1. 오이는 얇게 썰고, 어린잎채소는 물기를 턴다.\n2. 그릇에 퀴노아를 깔고 어린잎채소와 오이를 올린다.\n3. 훈제연어를 먹기 좋게 찢어 얹는다.\n4. 올리브유와 레몬즙을 섞어 위에 뿌린다.", ingredients: [
       { name: '익힌 퀴노아', qty: 80, unit: 'g' }, { name: '훈제연어', qty: 80, unit: 'g' },
       { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '오이', qty: 0.5, unit: '개' },
-      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] }
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '코브 샐러드 볼', minutes: 25, source_name: 'BBC Good Food Middle East', source_url: 'https://bbcgoodfoodme.com/recipes/cobb-salad-bowls', steps_summary: "1. 달걀은 소금물에 7분쯤 삶아 찬물에 식힌 뒤 껍질을 벗긴다.\n2. 베이컨은 양면이 바삭하도록 구워 식힌다.\n3. 올리브유, 식초, 디종 머스터드에 설탕을 아주 조금 넣어 걸쭉해질 때까지 섞는다.\n4. 상추를 반으로 갈라 그릇에 담고 아보카도, 토마토, 닭고기, 베이컨, 반으로 자른 달걀을 올린다.\n5. 드레싱을 뿌리고 후추로 마무리한다.", ingredients: [
+      { name: '달걀', qty: 1, unit: '개' }, { name: '베이컨', qty: 2, unit: '줄' },
+      { name: '올리브유', qty: 2, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' },
+      { name: '디종 머스터드', qty: 0.5, unit: '큰술' }, { name: '리틀젬 상추', qty: 1, unit: '개' },
+      { name: '아보카도', qty: 0.25, unit: '개' }, { name: '토마토', qty: 1.5, unit: '개' },
+      { name: '조리된 닭가슴살', qty: 75, unit: 'g' } ] },
+  { name: '니수아즈 샐러드', minutes: 25, source_name: 'Food Network (Geoffrey Zakarian)', source_url: 'https://www.foodnetwork.com/fnk/recipes/salade-nicoise-7566257.amp', steps_summary: "1. 달걀은 10분쯤 삶아 찬물에 식힌 뒤 껍질을 벗기고 4등분한다.\n2. 껍질콩은 3분쯤 데쳐 찬물에 식히고 물기를 뺀다.\n3. 식초와 머스터드를 섞고 올리브유를 천천히 부어 드레싱을 만든다.\n4. 감자는 삶아 얇게 썰어 드레싱에 버무린다.\n5. 상추 위에 감자, 껍질콩, 토마토, 참치를 올리고 달걀, 안초비, 올리브를 얹는다.", ingredients: [
+      { name: '달걀', qty: 1, unit: '개' }, { name: '껍질콩', qty: 30, unit: 'g' },
+      { name: '식초', qty: 1, unit: '큰술' }, { name: '디종 머스터드', qty: 0.25, unit: '큰술' },
+      { name: '올리브유', qty: 2, unit: '큰술' }, { name: '햇감자', qty: 85, unit: 'g' },
+      { name: '상추', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 55, unit: 'g' },
+      { name: '참치캔', qty: 85, unit: 'g' }, { name: '안초비', qty: 2, unit: '개' },
+      { name: '올리브', qty: 20, unit: 'g' } ] },
+  { name: '카프레제 샐러드', minutes: 10, source_name: 'Food Network (Gesine Bullock-Prado)', source_url: 'https://www.foodnetwork.com/recipes/caprese-salad-5273751.amp', steps_summary: "1. 토마토와 모차렐라를 얇게 썬다.\n2. 접시에 토마토와 치즈를 번갈아 겹쳐 펼친다.\n3. 올리브유와 발사믹 식초를 뿌린다.\n4. 바질 잎을 찢어 올리고 소금, 후추로 간한다.", ingredients: [
+      { name: '토마토', qty: 0.5, unit: '개' }, { name: '생모차렐라', qty: 45, unit: 'g' },
+      { name: '바질', qty: 4, unit: '장' }, { name: '올리브유', qty: 1, unit: '큰술' },
+      { name: '발사믹 식초', qty: 1, unit: '큰술' } ] },
+  { name: '그릭 병아리콩 샐러드', minutes: 15, source_name: 'BBC Good Food Middle East', source_url: 'https://bbcgoodfoodme.com/recipes/greek-chickpea-salad-melting-feta', steps_summary: "1. 식초, 기름, 오레가노를 큰 볼에 섞는다.\n2. 병아리콩, 적양파, 오이, 올리브, 토마토를 올리되 아직 버무리지 않는다.\n3. 페타치즈에 밀가루와 커민을 묻혀 기름 두른 팬에서 모든 면을 짧게 굽는다.\n4. 샐러드를 버무려 담고 구운 페타치즈를 올린다.", ingredients: [
+      { name: '병아리콩', qty: 90, unit: 'g' }, { name: '적양파', qty: 0.5, unit: '개' },
+      { name: '오이', qty: 0.5, unit: '개' }, { name: '올리브', qty: 20, unit: 'g' },
+      { name: '토마토', qty: 1.5, unit: '개' }, { name: '페타치즈', qty: 50, unit: 'g' },
+      { name: '올리브유', qty: 0.5, unit: '큰술' }, { name: '식초', qty: 0.5, unit: '큰술' } ] },
+  { name: '시저 샐러드', minutes: 30, source_name: 'Food Network Kitchen', source_url: 'https://www.foodnetwork.com/recipes/food-network-kitchen/the-best-caesar-salad-8037173.amp', steps_summary: "1. 오븐을 200도로 예열한다.\n2. 올리브유와 버터에 마늘 향을 우려 빵에 입히고, 노릇하게 구운 뒤 파르메산과 후추를 뿌려 식힌다.\n3. 안초비는 물에 담가 짠맛을 뺀 뒤 마늘과 함께 곱게 다진다.\n4. 안초비, 노른자, 머스터드, 레몬즙을 섞고 올리브유를 조금씩 부어 걸쭉하게 만든 뒤 파르메산을 넣는다.\n5. 물기를 뺀 로메인과 크루통을 드레싱에 버무리고 파르메산을 올린다. 드레싱에 날달걀 노른자가 들어가며, 1인분 양이 적어 2인분을 만들어 나눠 쓰는 편이 편하다.", ingredients: [
+      { name: '로메인', qty: 0.5, unit: '개' }, { name: '올리브유', qty: 2.5, unit: '큰술' },
+      { name: '버터', qty: 0.5, unit: '큰술' }, { name: '마늘', qty: 1, unit: '개' },
+      { name: '식빵', qty: 20, unit: 'g' }, { name: '파르메산치즈', qty: 2, unit: '큰술' },
+      { name: '안초비', qty: 1, unit: '개' }, { name: '레몬즙', qty: 0.5, unit: '큰술' } ] }
 ];
 
 const DAYS = ['월', '화', '수', '목', '금'];
@@ -363,7 +390,12 @@ async function loadAll() {
     .filter((x) => x.recipe);
   state.items = (s.data || []).map((row) => ({ id: row.id, name: row.name, qty: Number(row.qty), unit: row.unit, purchased: row.purchased }));
   state.loaded = true;
+  if (state.recipes.length > 0 && !toppedUp) {
+    toppedUp = true; /* 동시 호출로 중복 삽입되는 것을 막는다 */
+    try { if (await topUpSources()) await loadAll(); } catch (_) { toppedUp = false; }
+  }
 }
+let toppedUp = false;
 
 /* 기능 1: 추천받기 -> 5끼 계획과 합산 장보기 목록을 저장 */
 async function recommend() {
@@ -423,12 +455,26 @@ async function setPurchased(itemId, value) {
   else say('');
 }
 
+async function topUpSources() {
+  /* 이미 샘플이 있는 계정에 출처 있는 새 레시피만 추가 */
+  const have = new Set(state.recipes.map((r) => r.name));
+  const missing = SEED.filter((r) => r.source_url && !have.has(r.name));
+  if (!missing.length) return false;
+  const { error } = await sb.from('recipes').insert(missing.map((r) => ({
+    name: r.name, minutes: r.minutes, ingredients: r.ingredients, steps_summary: r.steps_summary,
+    source_name: r.source_name, source_url: r.source_url
+  })));
+  if (error) throw error;
+  return true;
+}
+
 async function insertSamples() {
   if (state.busy) return;
   state.busy = true; render(); say('샘플 레시피를 넣는 중입니다.');
   try {
     const { error } = await sb.from('recipes').insert(SEED.map((r) => ({
-      name: r.name, minutes: r.minutes, ingredients: r.ingredients
+      name: r.name, minutes: r.minutes, ingredients: r.ingredients, steps_summary: r.steps_summary,
+      source_name: r.source_name || null, source_url: r.source_url || null
     })));
     if (error) throw error;
     await loadAll();
