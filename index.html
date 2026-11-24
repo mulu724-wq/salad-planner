@@ -144,6 +144,22 @@
   .d-eaten { border-radius: 999px; padding: 4px 22px; justify-content: center; align-self: center; }
 
   .note { font-size: 13px; line-height: 1.7; color: var(--muted); text-align: center; padding-top: 8px; }
+  .note a { color: var(--burgundy); }
+
+  /* 외부 레시피 */
+  .x-form { display: flex; gap: 8px; padding: 6px 6px 6px 18px; border-radius: 999px; margin-bottom: 12px; }
+  .x-form:focus-within { outline: 3px solid var(--burgundy); outline-offset: 3px; }
+  .x-form input { flex: 1 1 auto; min-width: 0; border: 0; background: transparent; font-size: 16px; padding: 8px 0; }
+  .x-form input:focus-visible { outline: none; }
+  .x-go { flex: 0 0 auto; border: 0; border-radius: 999px; background: var(--burgundy); color: var(--paper); padding: 8px 22px; min-height: 44px; font-weight: 600; cursor: pointer; }
+  .x-go:disabled { opacity: 0.5; cursor: default; }
+  .x-status { margin-bottom: 12px; text-align: left; }
+  .x-item { display: flex; align-items: center; gap: 14px; padding: 10px 16px; }
+  .x-thumb { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 14px; object-fit: cover; background: rgba(169, 185, 165, 0.4); }
+  .x-item .card-link { flex: 1 1 auto; min-width: 0; justify-content: space-between; font-size: 16px; font-weight: 600; }
+  .x-hero { width: 100%; max-height: 280px; object-fit: cover; border-radius: var(--radius); }
+  .x-steps { list-style: decimal; padding-left: 22px; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 1.7; color: var(--text); }
+  .x-more { align-self: center; }
 </style>
 </head>
 <body>
@@ -183,6 +199,10 @@
       <button type="button" class="cta" id="btn-recommend">이번 주 추천받기</button>
     </section>
 
+    <section aria-label="외부 레시피">
+      <button type="button" class="cta secondary" id="btn-ext">외부 샐러드 레시피 찾기</button>
+    </section>
+
     <section aria-labelledby="t-cards">
       <h2 class="section-title" id="t-cards">요일별 샐러드</h2>
       <div id="cards" class="cards"></div>
@@ -220,6 +240,62 @@
     <p class="src" id="d-src" style="text-align:center"></p>
 
     <label class="check glass d-eaten"><input type="checkbox" id="d-eaten">먹음으로 표시</label>
+  </div>
+
+  <!-- 외부 레시피: 검색과 보관 목록 -->
+  <div id="view-ext" class="stack" hidden>
+    <button type="button" class="link-btn back" id="x-back">목록으로</button>
+
+    <section aria-labelledby="t-xs">
+      <h2 class="section-title" id="t-xs">외부 샐러드 레시피</h2>
+      <form id="x-form" class="x-form glass" role="search">
+        <input id="x-q" type="search" placeholder="영어로 검색 (예: chicken, avocado)" maxlength="60" autocomplete="off" aria-label="샐러드 검색어">
+        <button type="submit" class="x-go" id="x-go">검색</button>
+      </form>
+      <p class="msg x-status" id="x-status"></p>
+      <ul class="list glass" id="x-results"></ul>
+      <button type="button" class="link-btn x-more" id="x-more" hidden>더 보기</button>
+    </section>
+
+    <section aria-labelledby="t-xsaved">
+      <h2 class="section-title" id="t-xsaved">보관한 레시피</h2>
+      <ul class="list glass" id="x-saved"></ul>
+      <p class="meta" id="x-saved-empty">보관한 레시피가 없습니다. 레시피를 열어 "보관하기"를 누르면 여기에 쌓입니다.</p>
+    </section>
+
+    <p class="note">레시피 데이터 제공: <a href="https://spoonacular.com/food-api" target="_blank" rel="noopener noreferrer">spoonacular API</a>. 재료와 조리법은 저장하지 않고 열 때마다 불러옵니다.</p>
+  </div>
+
+  <!-- 외부 레시피: 상세 -->
+  <div id="view-xd" class="stack" hidden>
+    <button type="button" class="link-btn back" id="xd-back">목록으로</button>
+
+    <header class="d-head">
+      <span class="day">EXTERNAL RECIPE</span>
+      <h2 id="xd-name"></h2>
+      <p class="meta" id="xd-meta"></p>
+    </header>
+
+    <p class="msg" id="xd-status"></p>
+
+    <div id="xd-body" class="stack" hidden>
+      <img id="xd-img" class="x-hero" alt="" referrerpolicy="no-referrer" hidden>
+
+      <section aria-labelledby="xd-t-ing">
+        <h3 class="section-title" id="xd-t-ing">재료</h3>
+        <ul class="list glass d-ing" id="xd-ing"></ul>
+      </section>
+
+      <section aria-labelledby="xd-t-steps">
+        <h3 class="section-title" id="xd-t-steps">조리법 (영어 원문)</h3>
+        <div class="panel glass"><ol class="x-steps" id="xd-steps"></ol></div>
+      </section>
+
+      <p class="src" id="xd-src" style="text-align:center"></p>
+      <button type="button" class="cta secondary" id="xd-save">보관하기</button>
+    </div>
+
+    <p class="note">레시피 데이터 제공: <a href="https://spoonacular.com/food-api" target="_blank" rel="noopener noreferrer">spoonacular API</a>. 재료 분량은 레시피가 정한 인분 기준입니다.</p>
   </div>
 
 </main>
@@ -324,7 +400,8 @@ const WEEK = weekStart(new Date());
 const WEEK_KEY = WEEK.getFullYear() + '-' + pad(WEEK.getMonth() + 1) + '-' + pad(WEEK.getDate());
 
 /* 화면 상태 */
-const state = { user: null, recipes: [], plan: [], items: [], busy: false, loaded: false, detailId: null };
+const state = { user: null, recipes: [], plan: [], items: [], busy: false, loaded: false, detailId: null,
+  ext: null, xq: '', xresults: [], xtotal: 0, xleft: null, xsaved: [], xbusy: false, xsaving: false, xsearched: false, xid: null, xdetail: null, xerr: '' };
 
 const configured = SUPABASE_URL.indexOf('https://') === 0 && SUPABASE_PUBLISHABLE_KEY.indexOf('여기에') === -1 && SUPABASE_PUBLISHABLE_KEY.length > 20;
 let sb = null;
@@ -340,12 +417,16 @@ function showView(name) {
   $('view-conn').hidden = name !== 'conn';
   $('view-app').hidden = name !== 'app';
   $('view-detail').hidden = name !== 'detail';
+  $('view-ext').hidden = name !== 'ext';
+  $('view-xd').hidden = name !== 'xd';
 }
 
-/* 로그인 상태에서는 목록 또는 상세 중 하나를 보여준다 */
+/* 로그인 상태에서는 목록, 상세, 외부 레시피 중 하나를 보여준다 */
 function applyView() {
   if (!state.user) return;
-  showView(state.detailId ? 'detail' : 'app');
+  if (state.detailId) showView('detail');
+  else if (state.ext) showView(state.ext.mode === 'detail' ? 'xd' : 'ext');
+  else showView('app');
 }
 
 /* ---------------- 데이터 처리 ---------------- */
@@ -551,6 +632,7 @@ function render(focusId) {
   $('note').textContent = '체크와 추천 결과는 이 브라우저에 연결되어 저장됩니다. 다시 열어도 이번 주 목록이 그대로 보이지만, 브라우저 데이터를 지우거나 다른 기기에서 열면 새로 시작됩니다.';
 
   if (state.detailId) renderDetail();
+  if (state.ext) xrender();
 
   /* 다시 그린 뒤에도 키보드 포커스 유지 */
   if (focusId && !state.detailId) {
@@ -600,6 +682,173 @@ function closeDetail() {
   else { state.detailId = null; applyView(); render(); window.scrollTo(0, 0); }
 }
 
+/* ---------------- 외부 레시피 (Spoonacular) ----------------
+   약관상 재료·조리법은 저장할 수 없다. Supabase에는 번호, 제목, 이미지 주소만 두고,
+   상세는 열 때마다 서버 함수(/api/spoonacular)에서 불러온다. 아래 xcache는 이 탭이 열려 있는 동안만 쓰는 메모리다. */
+
+const X_API = '/api/spoonacular';
+const xcache = new Map();
+const safeImg = (u) => (u && /^https:\/\//.test(u) ? u : '');
+const safeUrl = (u) => (u && /^https?:\/\//.test(u) ? u : '');
+
+async function xfetch(params) {
+  let res, data = null;
+  try { res = await fetch(X_API + '?' + new URLSearchParams(params)); }
+  catch (_) { throw new Error('서버 함수에 연결하지 못했습니다.'); }
+  try { data = await res.json(); } catch (_) { /* 본문 없음 */ }
+  if (res.status === 404) throw new Error('서버 함수(/api/spoonacular)가 아직 배포되지 않았습니다.');
+  if (!res.ok) throw new Error((data && data.error) || ('요청에 실패했습니다 (' + res.status + ')'));
+  if (data && typeof data.quotaLeft === 'number') state.xleft = data.quotaLeft;
+  return data;
+}
+
+async function xloadSaved() {
+  const { data, error } = await sb.from('external_recipes')
+    .select('id, external_id, title, image_url').order('created_at', { ascending: false });
+  if (error) throw error;
+  state.xsaved = data || [];
+}
+const xSavedRow = (extId) => state.xsaved.find((s) => Number(s.external_id) === Number(extId));
+
+async function xsearch(more) {
+  if (state.xbusy) return;
+  state.xbusy = true; state.xerr = ''; xrender();
+  try {
+    const q = more ? state.xq : $('x-q').value.trim();
+    const d = await xfetch({ action: 'search', q, offset: more ? state.xresults.length : 0 });
+    state.xq = q;
+    state.xresults = more ? state.xresults.concat(d.results) : d.results;
+    state.xtotal = d.total;
+    state.xsearched = true;
+  } catch (e) { state.xerr = e.message; }
+  finally { state.xbusy = false; xrender(); }
+}
+
+async function xloadDetail(id) {
+  state.xid = id; state.xerr = '';
+  if (xcache.has(id)) { state.xdetail = xcache.get(id); xrender(); return; }
+  state.xdetail = null; state.xbusy = true; xrender();
+  try {
+    const d = await xfetch({ action: 'detail', id });
+    xcache.set(id, d);
+    if (state.xid === id) state.xdetail = d;
+  } catch (e) { if (state.xid === id) state.xerr = e.message; }
+  finally { state.xbusy = false; xrender(); }
+}
+
+async function xtoggleSave() {
+  const d = state.xdetail;
+  if (!d || state.xsaving) return;
+  state.xsaving = true; xrender();
+  try {
+    const row = xSavedRow(d.id);
+    if (row) {
+      const { error } = await sb.from('external_recipes').delete().eq('id', row.id);
+      if (error) throw error;
+    } else {
+      const { error } = await sb.from('external_recipes').insert({
+        provider: 'spoonacular', external_id: d.id, title: String(d.title).slice(0, 300), image_url: safeImg(d.image) || null
+      });
+      if (error && error.code !== '23505') throw error;   /* 23505: 이미 보관됨 */
+    }
+    await xloadSaved();
+    say('');
+  } catch (e) { say('보관 상태를 바꾸지 못했습니다: ' + (e.message || e), true); }
+  finally { state.xsaving = false; xrender(); }
+}
+
+async function xdelete(rowId) {
+  const { error } = await sb.from('external_recipes').delete().eq('id', rowId);
+  if (error) { say('삭제하지 못했습니다: ' + error.message, true); return; }
+  try { await xloadSaved(); say(''); } catch (e) { say('목록을 새로 불러오지 못했습니다: ' + (e.message || e), true); }
+  xrender();
+}
+
+function xrow(id, title, img, extra) {
+  const im = safeImg(img);
+  return '<li class="x-item">' +
+    (im ? '<img class="x-thumb" loading="lazy" referrerpolicy="no-referrer" alt="" src="' + esc(im) + '">' : '<span class="x-thumb" aria-hidden="true"></span>') +
+    '<button type="button" class="card-link" data-xopen="' + esc(id) + '">' + esc(title) + '<span class="chev" aria-hidden="true"></span></button>' +
+    extra + '</li>';
+}
+
+function xquotaText() {
+  return typeof state.xleft === 'number' ? ' 오늘 남은 무료 한도는 약 ' + Math.floor(state.xleft) + '포인트입니다.' : '';
+}
+
+function xrender() {
+  if (!state.ext) return;
+
+  if (state.ext.mode === 'list') {
+    $('x-go').disabled = state.xbusy;
+    const st = $('x-status');
+    st.className = 'msg x-status' + (state.xerr ? ' error' : '');
+    if (state.xbusy) st.textContent = '불러오는 중입니다.';
+    else if (state.xerr) st.textContent = state.xerr;
+    else if (state.xsearched) st.textContent = state.xresults.length ? '총 ' + state.xtotal + '개 중 ' + state.xresults.length + '개를 보여드립니다.' + xquotaText() : '결과가 없습니다. 다른 영어 단어로 검색해 보세요.';
+    else st.textContent = '영어로 검색하세요. 비워 두고 검색하면 샐러드 전체에서 불러옵니다. 검색과 상세 보기는 한도를 씁니다.';
+
+    $('x-results').innerHTML = state.xresults.map((r) =>
+      xrow(r.id, r.title, r.image, xSavedRow(r.id) ? '<span class="tag">보관됨</span>' : '')).join('');
+    $('x-more').hidden = state.xbusy || state.xresults.length >= state.xtotal;
+
+    $('x-saved').innerHTML = state.xsaved.map((s) =>
+      xrow(s.external_id, s.title, s.image_url, '<button type="button" class="link-btn" data-xdel="' + esc(s.id) + '">삭제</button>')).join('');
+    $('x-saved-empty').hidden = state.xsaved.length > 0;
+    return;
+  }
+
+  /* 상세 */
+  const d = state.xdetail;
+  const st = $('xd-status');
+  st.className = 'msg' + (state.xerr ? ' error' : '');
+  st.textContent = state.xerr || (state.xbusy && !d ? '불러오는 중입니다.' : '');
+  $('xd-body').hidden = !d;
+  $('xd-name').textContent = d ? d.title : '';
+  if (!d) { $('xd-meta').textContent = ''; return; }
+
+  $('xd-meta').textContent = [d.minutes ? '조리 ' + d.minutes + '분' : '', d.servings ? d.servings + '인분 기준' : ''].filter(Boolean).join(' · ');
+  const im = safeImg(d.image);
+  $('xd-img').hidden = !im;
+  if (im) $('xd-img').src = im;
+
+  $('xd-ing').innerHTML = d.ingredients.map((i) =>
+    '<li><span class="name">' + esc(i.name) + '</span><span class="qty">' + (i.amount ? fmtQty(i.amount) + ' ' + esc(i.unit) : esc(i.unit)) + '</span></li>').join('');
+  $('xd-steps').innerHTML = d.steps.length
+    ? d.steps.map((s) => '<li>' + esc(s) + '</li>').join('')
+    : '<li style="list-style:none;color:var(--muted)">조리법이 제공되지 않은 레시피입니다. 아래 원문 출처에서 확인해 주세요.</li>';
+
+  const url = safeUrl(d.sourceUrl);
+  $('xd-src').innerHTML = url
+    ? '원문 출처: <a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--burgundy)">' + esc(d.sourceName || '원문 보기') + '</a>'
+    : (d.sourceName ? '원문 출처: ' + esc(d.sourceName) : '');
+
+  const saved = !!xSavedRow(d.id);
+  const btn = $('xd-save');
+  btn.disabled = state.xsaving;
+  btn.textContent = saved ? '보관 해제' : '보관하기';
+}
+
+function openExt() {
+  state.ext = { mode: 'list' };
+  history.pushState({ x: 'list' }, '');
+  applyView(); render(); window.scrollTo(0, 0);
+  $('x-q').focus();
+}
+
+function openExtDetail(id) {
+  state.ext = { mode: 'detail', id };
+  history.pushState({ x: 'detail', id }, '');
+  applyView(); window.scrollTo(0, 0);
+  xloadDetail(id);
+  $('xd-back').focus();
+}
+
+function closeExt() {
+  if (history.state && history.state.x) history.back();   /* popstate에서 정리 */
+  else { state.ext = null; applyView(); render(); window.scrollTo(0, 0); }
+}
+
 /* ---------------- 로그인 ---------------- */
 
 /* 로그인 화면 없이, 방문한 브라우저마다 익명 계정을 자동으로 만들어 쓴다 */
@@ -626,6 +875,7 @@ async function handleSession(session) {
   state.started = true;
   state.user = user;
   state.recipes = []; state.plan = []; state.items = []; state.loaded = false; state.detailId = null;
+  state.ext = null; state.xsaved = []; state.xresults = []; state.xsearched = false; state.xdetail = null; state.xerr = '';
 
   applyView(); render(); say('');
   try {
@@ -633,6 +883,7 @@ async function handleSession(session) {
   } catch (e) {
     say('목록을 불러오지 못했습니다: ' + (e.message || e), true);
   }
+  try { await xloadSaved(); } catch (_) { /* 외부 레시피 표를 못 읽어도 나머지 기능은 그대로 쓴다 */ }
   render();
 }
 
@@ -649,14 +900,29 @@ document.addEventListener('change', (e) => {
 document.addEventListener('click', (ev) => {
   const o = ev.target.closest && ev.target.closest('[data-open]');
   if (o) openDetail(o.dataset.open);
+  const xo = ev.target.closest && ev.target.closest('[data-xopen]');
+  if (xo) openExtDetail(xo.dataset.xopen);
+  const xd = ev.target.closest && ev.target.closest('[data-xdel]');
+  if (xd) xdelete(xd.dataset.xdel);
 });
 $('btn-back').addEventListener('click', closeDetail);
+$('btn-ext').addEventListener('click', openExt);
+$('x-back').addEventListener('click', closeExt);
+$('xd-back').addEventListener('click', closeExt);
+$('x-form').addEventListener('submit', (e) => { e.preventDefault(); xsearch(false); });
+$('x-more').addEventListener('click', () => xsearch(true));
+$('xd-save').addEventListener('click', xtoggleSave);
 window.addEventListener('popstate', (ev) => {
   const prev = state.detailId;
-  state.detailId = (ev.state && ev.state.d) || null;
+  const prevExt = state.ext;
+  const st = ev.state || {};
+  state.detailId = st.d || null;
+  state.ext = st.x === 'list' ? { mode: 'list' } : st.x === 'detail' ? { mode: 'detail', id: st.id } : null;
   if (!state.user) return;
   applyView(); render();
   window.scrollTo(0, 0);
+  if (state.ext && state.ext.mode === 'detail') xloadDetail(state.ext.id);
+  if (!state.ext && prevExt) { $('btn-ext').focus(); return; }
   if (!state.detailId && prev) {
     const back = document.querySelector('[data-open="' + prev + '"]');
     if (back) back.focus();
