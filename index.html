@@ -4,6 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Weekly Salad Planner</title>
+<meta name="description" content="이번 주 5끼 샐러드 추천과 장보기 체크리스트를 한 번에 정리합니다.">
+<meta name="theme-color" content="#F3EADB">
+<link rel="canonical" href="https://salad-planner.vercel.app/">
+
+<!-- 공유 미리보기 (카카오톡, 링크드인 등) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Weekly Salad Planner">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://salad-planner.vercel.app/">
+<meta property="og:title" content="Weekly Salad Planner">
+<meta property="og:description" content="이번 주 5끼 샐러드 추천과 장보기 체크리스트를 한 번에.">
+<meta property="og:image" content="https://salad-planner.vercel.app/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Weekly Salad Planner: 이번 주 5끼 추천과 장보기 체크리스트">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Weekly Salad Planner">
+<meta name="twitter:description" content="이번 주 5끼 샐러드 추천과 장보기 체크리스트를 한 번에.">
+<meta name="twitter:image" content="https://salad-planner.vercel.app/og-image.png">
+
+<!-- 파비콘: 별도 파일 없이 HTML 안에 포함 (PNG는 SVG를 못 쓰는 브라우저용) -->
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23F3EADB'/%3E%3Cellipse%20cx='22'%20cy='28'%20rx='10'%20ry='5.5'%20fill='%23A9B9A5'%20transform='rotate%28-28%2022%2028%29'/%3E%3Cellipse%20cx='42'%20cy='28'%20rx='10'%20ry='5.5'%20fill='%23A9B9A5'%20transform='rotate%2828%2042%2028%29'/%3E%3Cellipse%20cx='32'%20cy='24'%20rx='12'%20ry='6.5'%20fill='%235E6B3A'/%3E%3Ccircle%20cx='25'%20cy='20'%20r='4'%20fill='%23E2B65A'/%3E%3Cpath%20d='M8%2032h48c0%2014-10%2021-24%2021S8%2046%208%2032z'%20fill='%236A2A3B'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
   :root {
