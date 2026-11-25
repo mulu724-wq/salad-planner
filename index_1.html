@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekly Salad Planner</title>
+<meta name="description" content="이번 주 5끼 샐러드 추천과 장보기 체크리스트를 한 번에 정리합니다.">
+<meta name="theme-color" content="#F3EADB">
+<link rel="canonical" href="https://salad-planner.vercel.app/">
+
+<!-- 공유 미리보기 (카카오톡, 링크드인 등) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Weekly Salad Planner">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://salad-planner.vercel.app/">
+<meta property="og:title" content="Weekly Salad Planner">
+<meta property="og:description" content="이번 주 5끼 샐러드 추천과 장보기 체크리스트를 한 번에.">
+<meta property="og:image" content="https://salad-planner.vercel.app/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Weekly Salad Planner: 이번 주 5끼 추천과 장보기 체크리스트">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Weekly Salad Planner">
+<meta name="twitter:description" content="이번 주 5끼 샐러드 추천과 장보기 체크리스트를 한 번에.">
+<meta name="twitter:image" content="https://salad-planner.vercel.app/og-image.png">
+
+<!-- 파비콘: 별도 파일 없이 HTML 안에 포함 (PNG는 SVG를 못 쓰는 브라우저용) -->
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23F3EADB'/%3E%3Cellipse%20cx='22'%20cy='28'%20rx='10'%20ry='5.5'%20fill='%23A9B9A5'%20transform='rotate%28-28%2022%2028%29'/%3E%3Cellipse%20cx='42'%20cy='28'%20rx='10'%20ry='5.5'%20fill='%23A9B9A5'%20transform='rotate%2828%2042%2028%29'/%3E%3Cellipse%20cx='32'%20cy='24'%20rx='12'%20ry='6.5'%20fill='%235E6B3A'/%3E%3Ccircle%20cx='25'%20cy='20'%20r='4'%20fill='%23E2B65A'/%3E%3Cpath%20d='M8%2032h48c0%2014-10%2021-24%2021S8%2046%208%2032z'%20fill='%236A2A3B'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --cream: #F3EADB;
+    --paper: #FAF5EA;
+    --sage: #A9B9A5;
+    --chamomile: #E2B65A;
+    --olive: #5E6B3A;
+    --burgundy: #6A2A3B;
+    --text: #2B2A24;
+    --muted: #5A5848;
+    --line: rgba(94, 107, 58, 0.22);
+    --glass: rgba(250, 245, 234, 0.72);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    word-break: keep-all;
+  }
+  h1, h2, h3, p, ul, ol { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+  button, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--burgundy); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+
+  /* 배경: 팔레트 색의 흐린 빛 덩어리가 천천히 움직인다 */
+  .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+        background: linear-gradient(180deg, #F7EFE1 0%, #F3EADB 55%, #EADFCB 100%); }
+  .bg i { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.55; will-change: transform; }
+  .bg i:nth-child(1) { width: 62vmax; height: 62vmax; left: -22vmax; top: -24vmax; background: var(--sage); animation: drift1 38s ease-in-out infinite alternate; }
+  .bg i:nth-child(2) { width: 46vmax; height: 46vmax; right: -18vmax; top: 18vmax; background: var(--chamomile); opacity: 0.42; animation: drift2 46s ease-in-out infinite alternate; }
+  .bg i:nth-child(3) { width: 40vmax; height: 40vmax; left: 8vmax; bottom: -22vmax; background: var(--burgundy); opacity: 0.20; animation: drift3 52s ease-in-out infinite alternate; }
+  .bg i:nth-child(4) { width: 34vmax; height: 34vmax; right: 6vmax; bottom: -14vmax; background: var(--olive); opacity: 0.22; animation: drift1 60s ease-in-out infinite alternate-reverse; }
+  @keyframes drift1 { from { transform: translate(0, 0) scale(1); }    to { transform: translate(6vmax, 5vmax) scale(1.08); } }
+  @keyframes drift2 { from { transform: translate(0, 0) scale(1); }    to { transform: translate(-7vmax, -4vmax) scale(1.12); } }
+  @keyframes drift3 { from { transform: translate(0, 0) scale(1.05); } to { transform: translate(5vmax, -6vmax) scale(0.95); } }
+  @media (prefers-reduced-motion: reduce) { .bg i { animation: none; } }
+
+  .app { max-width: 600px; margin: 0 auto; padding: 56px 20px 88px; display: flex; flex-direction: column; gap: 40px; }
+
+  /* 상단 제목: 크고 가운데 정렬 */
+  .head { text-align: center; padding: 20px 0 0; }
+  .head h1 {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Noto Sans KR', sans-serif;
+    font-size: clamp(22px, 6vw, 36px); line-height: 1.2; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-wrap: balance;
+    color: var(--burgundy);
+  }
+
+  .link-btn { background: none; border: 0; padding: 8px 0; min-height: 44px; cursor: pointer; color: var(--burgundy); font-size: 14px; font-weight: 500; }
+  .link-btn:hover { text-decoration: underline; }
+
+  .section-title { font-size: 22px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin-bottom: 14px; }
+
+  .glass { background: var(--glass); -webkit-backdrop-filter: saturate(160%) blur(18px); backdrop-filter: saturate(160%) blur(18px);
+           border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 8px 30px rgba(74, 62, 40, 0.08); }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass { background: var(--paper); } }
+
+  .panel { border-radius: var(--radius); padding: 24px 22px; display: flex; flex-direction: column; gap: 16px; }
+  .panel p { font-size: 15px; color: var(--muted); }
+  .panel code { font-size: 13px; background: rgba(94,107,58,0.12); padding: 1px 6px; border-radius: 6px; }
+
+  .msg { font-size: 14px; color: var(--muted); text-align: center; overflow-wrap: anywhere; }
+  .msg:empty { display: none; }
+  .msg.error { color: var(--burgundy); font-weight: 500; }
+
+  .summary { display: flex; flex-wrap: wrap; gap: 14px; }
+  .stat { flex: 1 1 140px; border-radius: var(--radius); padding: 20px 22px; display: flex; flex-direction: column; gap: 2px; }
+  .stat .label { font-size: 13px; color: var(--muted); }
+  .stat .value { font-size: 40px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; color: var(--burgundy); }
+  .stat .value small { font-size: 16px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .week { font-size: 14px; color: var(--muted); margin-top: 12px; text-align: center; }
+
+  .cta {
+    width: 100%; min-height: 58px; border: 0; cursor: pointer; border-radius: 999px;
+    background: var(--burgundy); color: var(--paper);
+    font-size: 18px; font-weight: 600; padding: 14px 24px;
+    box-shadow: 0 10px 26px rgba(106, 42, 59, 0.28);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .cta:hover:not(:disabled) { background: #561f2e; transform: translateY(-1px); }
+  .cta:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 4px 12px rgba(106, 42, 59, 0.25); }
+  .cta:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
+  .cta.secondary { background: var(--olive); box-shadow: 0 10px 26px rgba(94, 107, 58, 0.28); }
+  .cta.secondary:hover:not(:disabled) { background: #4c582f; }
+
+  .cards { display: flex; flex-direction: column; gap: 14px; }
+  .empty { border-radius: var(--radius); border: 1px dashed rgba(94,107,58,0.5); background: rgba(250,245,234,0.5); padding: 32px 22px; text-align: center; color: var(--muted); font-size: 15px; }
+  .card { border-radius: var(--radius); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; transition: background .2s ease, border-color .2s ease; }
+  .card.done { background: rgba(213, 226, 208, 0.82); border-color: rgba(94,107,58,0.4); }
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .day { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: var(--olive); }
+  .card h3 { font-size: 20px; line-height: 1.35; font-weight: 700; letter-spacing: -0.01em; }
+  .meta { font-size: 14px; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 13px; padding: 3px 12px; background: rgba(169,185,165,0.7); color: var(--text); border-radius: 999px; }
+  .src { font-size: 14px; }
+  .src a { color: var(--burgundy); }
+
+  .check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-size: 15px; user-select: none; }
+  .check input { width: 22px; height: 22px; accent-color: var(--burgundy); cursor: pointer; margin: 0; }
+
+  .shop-count { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+  .list { border-radius: var(--radius); overflow: hidden; }
+  .list:empty { display: none; }
+  .list li { border-bottom: 1px solid var(--line); }
+  .list li:last-child { border-bottom: 0; }
+  .row { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 6px 20px; cursor: pointer; }
+  .row input { width: 22px; height: 22px; accent-color: var(--burgundy); cursor: pointer; margin: 0; flex: 0 0 auto; }
+  .row .name { flex: 1 1 auto; font-size: 16px; }
+  .row .qty { flex: 0 0 auto; font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row.bought .name, .row.bought .qty { color: var(--muted); text-decoration: line-through; }
+
+  /* 카드의 레시피 이름 버튼 */
+  .card-link { background: none; border: 0; padding: 0; margin: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 10px;
+               font: inherit; font-weight: 700; letter-spacing: -0.01em; text-align: left; color: var(--text); cursor: pointer; }
+  .card-link:hover { color: var(--burgundy); }
+  .chev { flex: 0 0 auto; width: 8px; height: 8px; border-right: 2px solid var(--olive); border-top: 2px solid var(--olive); transform: rotate(45deg); }
+
+  /* 상세 화면 */
+  .stack { display: flex; flex-direction: column; gap: 32px; }
+  .back { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; }
+  .back::before { content: ''; width: 8px; height: 8px; border-left: 2px solid var(--burgundy); border-bottom: 2px solid var(--burgundy); transform: rotate(45deg); }
+  .d-head { text-align: center; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+  .d-head h2 { font-size: clamp(28px, 7.5vw, 40px); line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; color: var(--burgundy); }
+  .d-ing li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 8px 20px; }
+  .d-ing .name { font-size: 16px; }
+  .d-ing .qty { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .d-steps { font-size: 16px; line-height: 1.8; white-space: pre-wrap; color: var(--text); }
+  .d-steps.none { color: var(--muted); font-size: 15px; }
+  .d-eaten { border-radius: 999px; padding: 4px 22px; justify-content: center; align-self: center; }
+
+  .note { font-size: 13px; line-height: 1.7; color: var(--muted); text-align: center; padding-top: 8px; }
+  .note a { color: var(--burgundy); }
+
+  /* 외부 레시피 */
+  .x-form { display: flex; gap: 8px; padding: 6px 6px 6px 18px; border-radius: 999px; margin-bottom: 12px; }
+  .x-form:focus-within { outline: 3px solid var(--burgundy); outline-offset: 3px; }
+  .x-form input { flex: 1 1 auto; min-width: 0; border: 0; background: transparent; font-size: 16px; padding: 8px 0; }
+  .x-form input:focus-visible { outline: none; }
+  .x-go { flex: 0 0 auto; border: 0; border-radius: 999px; background: var(--burgundy); color: var(--paper); padding: 8px 22px; min-height: 44px; font-weight: 600; cursor: pointer; }
+  .x-go:disabled { opacity: 0.5; cursor: default; }
+  .x-status { margin-bottom: 12px; text-align: left; }
+  .x-item { display: flex; align-items: center; gap: 14px; padding: 10px 16px; }
+  .x-thumb { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 14px; object-fit: cover; background: rgba(169, 185, 165, 0.4); }
+  .x-item .card-link { flex: 1 1 auto; min-width: 0; justify-content: space-between; font-size: 16px; font-weight: 600; }
+  .x-hero { width: 100%; max-height: 280px; object-fit: cover; border-radius: var(--radius); }
+  .x-steps { list-style: decimal; padding-left: 22px; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 1.7; color: var(--text); }
+  .x-more { align-self: center; }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<main class="app">
+
+  <header class="head">
+    <h1>Weekly Salad Planner</h1>
+  </header>
+
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+  <!-- 설정 누락 안내 -->
+  <section id="view-config" class="panel glass" hidden>
+    <p>Supabase 연결 값이 비어 있습니다. 이 파일 아래쪽 스크립트의 <code>SUPABASE_URL</code>과 <code>SUPABASE_PUBLISHABLE_KEY</code>에 Project URL과 publishable 키를 붙여 넣은 뒤 다시 배포해 주세요.</p>
+  </section>
+
+  <!-- 연결 실패 -->
+  <section id="view-conn" class="panel glass" hidden>
+    <p id="conn-text">서버에 연결하지 못했습니다.</p>
+    <button type="button" class="cta" id="btn-retry">다시 시도</button>
+  </section>
+
+  <!-- 앱 -->
+  <div id="view-app" hidden style="display:flex;flex-direction:column;gap:36px;">
+
+    <section aria-labelledby="t-summary">
+      <h2 class="section-title" id="t-summary">이번 주 요약</h2>
+      <div class="summary">
+        <div class="stat glass"><span class="label">먹은 끼니</span><span class="value" id="stat-eaten">0<small> / 0</small></span></div>
+        <div class="stat glass"><span class="label">산 재료</span><span class="value" id="stat-bought">0<small> / 0</small></span></div>
+      </div>
+      <p class="week" id="week-label"></p>
+    </section>
+
+    <section aria-label="추천">
+      <button type="button" class="cta" id="btn-recommend">이번 주 추천받기</button>
+    </section>
+
+    <section aria-label="외부 레시피">
+      <button type="button" class="cta secondary" id="btn-ext">외부 샐러드 레시피 찾기</button>
+    </section>
+
+    <section aria-labelledby="t-cards">
+      <h2 class="section-title" id="t-cards">요일별 샐러드</h2>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <section aria-labelledby="t-shop">
+      <h2 class="section-title" id="t-shop">장보기 체크리스트</h2>
+      <p class="shop-count" id="shop-count"></p>
+      <ul class="list glass" id="shop-list"></ul>
+    </section>
+
+    <p class="note" id="note"></p>
+  </div>
+
+  <!-- 레시피 상세 -->
+  <div id="view-detail" class="stack" hidden>
+    <button type="button" class="link-btn back" id="btn-back">목록으로</button>
+
+    <header class="d-head">
+      <span class="day" id="d-day"></span>
+      <h2 id="d-name"></h2>
+      <p class="meta" id="d-meta"></p>
+    </header>
+
+    <section aria-labelledby="t-ing">
+      <h3 class="section-title" id="t-ing">재료</h3>
+      <ul class="list glass d-ing" id="d-ing"></ul>
+    </section>
+
+    <section aria-labelledby="t-steps">
+      <h3 class="section-title" id="t-steps">조리법 요약</h3>
+      <div class="panel glass"><p class="d-steps" id="d-steps"></p></div>
+    </section>
+
+    <p class="src" id="d-src" style="text-align:center"></p>
+
+    <label class="check glass d-eaten"><input type="checkbox" id="d-eaten">먹음으로 표시</label>
+  </div>
+
+  <!-- 외부 레시피: 검색과 보관 목록 -->
+  <div id="view-ext" class="stack" hidden>
+    <button type="button" class="link-btn back" id="x-back">목록으로</button>
+
+    <section aria-labelledby="t-xs">
+      <h2 class="section-title" id="t-xs">외부 샐러드 레시피</h2>
+      <form id="x-form" class="x-form glass" role="search">
+        <input id="x-q" type="search" placeholder="영어로 검색 (예: chicken, avocado)" maxlength="60" autocomplete="off" aria-label="샐러드 검색어">
+        <button type="submit" class="x-go" id="x-go">검색</button>
+      </form>
+      <p class="msg x-status" id="x-status"></p>
+      <ul class="list glass" id="x-results"></ul>
+      <button type="button" class="link-btn x-more" id="x-more" hidden>더 보기</button>
+    </section>
+
+    <section aria-labelledby="t-xsaved">
+      <h2 class="section-title" id="t-xsaved">보관한 레시피</h2>
+      <ul class="list glass" id="x-saved"></ul>
+      <p class="meta" id="x-saved-empty">보관한 레시피가 없습니다. 레시피를 열어 "보관하기"를 누르면 여기에 쌓입니다.</p>
+    </section>
+
+    <p class="note">레시피 데이터 제공: <a href="https://spoonacular.com/food-api" target="_blank" rel="noopener noreferrer">spoonacular API</a>. 재료와 조리법은 저장하지 않고 열 때마다 불러옵니다.</p>
+  </div>
+
+  <!-- 외부 레시피: 상세 -->
+  <div id="view-xd" class="stack" hidden>
+    <button type="button" class="link-btn back" id="xd-back">목록으로</button>
+
+    <header class="d-head">
+      <span class="day">EXTERNAL RECIPE</span>
+      <h2 id="xd-name"></h2>
+      <p class="meta" id="xd-meta"></p>
+    </header>
+
+    <p class="msg" id="xd-status"></p>
+
+    <div id="xd-body" class="stack" hidden>
+      <img id="xd-img" class="x-hero" alt="" referrerpolicy="no-referrer" hidden>
+
+      <section aria-labelledby="xd-t-ing">
+        <h3 class="section-title" id="xd-t-ing">재료</h3>
+        <ul class="list glass d-ing" id="xd-ing"></ul>
+      </section>
+
+      <section aria-labelledby="xd-t-steps">
+        <h3 class="section-title" id="xd-t-steps">조리법 (영어 원문)</h3>
+        <div class="panel glass"><ol class="x-steps" id="xd-steps"></ol></div>
+      </section>
+
+      <p class="src" id="xd-src" style="text-align:center"></p>
+      <button type="button" class="cta secondary" id="xd-save">보관하기</button>
+    </div>
+
+    <p class="note">레시피 데이터 제공: <a href="https://spoonacular.com/food-api" target="_blank" rel="noopener noreferrer">spoonacular API</a>. 재료 분량은 레시피가 정한 인분 기준입니다.</p>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ------------------------------------------------------------------
+   Supabase 연결 값 (아래 두 줄만 채우면 됩니다)
+   - SUPABASE_URL: Project URL (https://xxxx.supabase.co)
+   - SUPABASE_PUBLISHABLE_KEY: publishable 키 (secret / service_role 키는 넣지 않는다)
+------------------------------------------------------------------- */
+const SUPABASE_URL = 'https://hposmyqlhvvzjwpuvduz.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_OthP3HTcr_-REP2MYVCbPw_rnIh7P-K';
+
+/* 레시피 테이블이 비어 있을 때 한 번 넣을 수 있는 샘플 10개.
+   직접 정리한 30개는 Supabase의 recipes 테이블에 넣거나, 아래 배열을 바꿔서 넣으면 된다. */
+const SEED = [
+  { name: '닭가슴살 퀴노아 샐러드', minutes: 15, steps_summary: "1. 방울토마토는 반으로 자르고, 오이는 얇게 반달 모양으로 썬다.\n2. 조리된 닭가슴살은 한입 크기로 찢거나 썬다.\n3. 올리브유와 레몬즙을 섞어 드레싱을 만든다.\n4. 그릇에 퀴노아를 깔고 닭가슴살, 방울토마토, 오이를 올린 뒤 드레싱을 뿌린다.", ingredients: [
+      { name: '조리된 닭가슴살', qty: 100, unit: 'g' }, { name: '익힌 퀴노아', qty: 80, unit: 'g' },
+      { name: '방울토마토', qty: 6, unit: '개' }, { name: '오이', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '렌틸콩 참치 샐러드', minutes: 10, steps_summary: "1. 참치는 체에 받쳐 기름을 충분히 뺀다.\n2. 적양파는 얇게 썰어 찬물에 5분쯤 담갔다가 물기를 빼고, 파프리카는 잘게 썬다.\n3. 올리브유와 식초를 섞어 드레싱을 만든다.\n4. 렌틸콩, 참치, 채소를 그릇에 담고 드레싱에 버무린다.", ingredients: [
+      { name: '삶은 렌틸콩', qty: 100, unit: 'g' }, { name: '참치캔', qty: 0.5, unit: '개' },
+      { name: '적양파', qty: 0.25, unit: '개' }, { name: '파프리카', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '병아리콩 페타 샐러드', minutes: 10, steps_summary: "1. 오이는 깍둑썰기하고, 방울토마토는 반으로 자른다.\n2. 병아리콩은 체에 받쳐 물기를 뺀다.\n3. 페타치즈는 손으로 부수거나 작게 깍둑썬다.\n4. 모든 재료를 그릇에 담고 올리브유와 레몬즙을 뿌려 가볍게 섞는다. 페타치즈가 짠 편이라 소금은 따로 넣지 않는다.", ingredients: [
+      { name: '삶은 병아리콩', qty: 100, unit: 'g' }, { name: '페타치즈', qty: 40, unit: 'g' },
+      { name: '오이', qty: 0.5, unit: '개' }, { name: '방울토마토', qty: 6, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '훈제연어 아보카도 샐러드', minutes: 15, steps_summary: "1. 어린잎채소는 씻어 물기를 털고 접시에 깐다.\n2. 아보카도는 씨를 빼고 얇게 썰고, 오이는 얇게 어슷썬다.\n3. 잎채소 위에 아보카도, 오이, 훈제연어를 올린다.\n4. 올리브유와 레몬즙을 섞어 위에 뿌린다.", ingredients: [
+      { name: '훈제연어', qty: 80, unit: 'g' }, { name: '아보카도', qty: 0.5, unit: '개' },
+      { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '오이', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '달걀 시저 샐러드', minutes: 15, steps_summary: "1. 달걀은 끓는 물에 10분쯤 삶아 찬물에 식힌 뒤, 껍질을 벗겨 반으로 자른다.\n2. 로메인은 한입 크기로 뜯어 물기를 완전히 털어 낸다.\n3. 그릇에 로메인과 시저 드레싱을 넣고 버무린다.\n4. 달걀을 올리고 파마산치즈를 갈거나 얇게 뿌린다.", ingredients: [
+      { name: '달걀', qty: 2, unit: '개' }, { name: '로메인', qty: 80, unit: 'g' },
+      { name: '파마산치즈', qty: 15, unit: 'g' }, { name: '시저 드레싱', qty: 2, unit: '큰술' } ] },
+  { name: '두부 에다마메 샐러드', minutes: 15, steps_summary: "1. 에다마메는 끓는 물에 2~3분 데치거나 실온에서 해동한 뒤 물기를 뺀다.\n2. 두부는 키친타월로 물기를 닦고 깍둑썬다.\n3. 간장, 올리브유, 식초를 섞어 소스를 만든다.\n4. 어린잎채소 위에 두부, 에다마메, 반으로 자른 방울토마토를 올리고 소스를 뿌린다.", ingredients: [
+      { name: '두부', qty: 100, unit: 'g' }, { name: '냉동 에다마메', qty: 50, unit: 'g' },
+      { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 5, unit: '개' },
+      { name: '간장', qty: 1, unit: '큰술' }, { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '구운 새우 아보카도 샐러드', minutes: 20, steps_summary: "1. 냉동 새우는 찬물에 담가 해동하고 키친타월로 물기를 닦는다.\n2. 올리브유 절반을 달군 팬에 두르고, 새우를 앞뒤로 2~3분씩 익을 때까지 굽는다.\n3. 아보카도는 얇게 썰고, 방울토마토는 반으로 자른다.\n4. 어린잎채소 위에 새우, 아보카도, 방울토마토를 올리고 남은 올리브유와 레몬즙을 뿌린다.", ingredients: [
+      { name: '냉동 새우', qty: 100, unit: 'g' }, { name: '어린잎채소', qty: 60, unit: 'g' },
+      { name: '방울토마토', qty: 6, unit: '개' }, { name: '아보카도', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '렌틸콩 시금치 페타 샐러드', minutes: 15, steps_summary: "1. 시금치는 씻어 물기를 털고, 큰 잎은 먹기 좋게 자른다. 어린 샐러드용이 아니면 끓는 물에 10초쯤 데쳐 물기를 짠다.\n2. 적양파는 얇게 썰어 찬물에 5분쯤 담갔다가 건진다.\n3. 렌틸콩은 물기를 빼고, 페타치즈는 손으로 부순다.\n4. 올리브유와 식초를 섞어 모든 재료와 가볍게 버무린다.", ingredients: [
+      { name: '삶은 렌틸콩', qty: 100, unit: 'g' }, { name: '시금치', qty: 60, unit: 'g' },
+      { name: '페타치즈', qty: 40, unit: 'g' }, { name: '적양파', qty: 0.25, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '닭가슴살 병아리콩 샐러드', minutes: 15, steps_summary: "1. 로메인은 한입 크기로 뜯어 물기를 털고, 방울토마토는 반으로 자른다.\n2. 조리된 닭가슴살은 결대로 찢고, 병아리콩은 물기를 뺀다.\n3. 올리브유와 식초를 섞어 드레싱을 만든다.\n4. 재료를 그릇에 담고 드레싱을 뿌려 섞는다.", ingredients: [
+      { name: '조리된 닭가슴살', qty: 100, unit: 'g' }, { name: '삶은 병아리콩', qty: 80, unit: 'g' },
+      { name: '로메인', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 6, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' } ] },
+  { name: '퀴노아 훈제연어 샐러드', minutes: 15, steps_summary: "1. 오이는 얇게 썰고, 어린잎채소는 물기를 턴다.\n2. 그릇에 퀴노아를 깔고 어린잎채소와 오이를 올린다.\n3. 훈제연어를 먹기 좋게 찢어 얹는다.\n4. 올리브유와 레몬즙을 섞어 위에 뿌린다.", ingredients: [
+      { name: '익힌 퀴노아', qty: 80, unit: 'g' }, { name: '훈제연어', qty: 80, unit: 'g' },
+      { name: '어린잎채소', qty: 60, unit: 'g' }, { name: '오이', qty: 0.5, unit: '개' },
+      { name: '올리브유', qty: 1, unit: '큰술' }, { name: '레몬즙', qty: 1, unit: '큰술' } ] },
+  { name: '코브 샐러드 볼', minutes: 25, source_name: 'BBC Good Food Middle East', source_url: 'https://bbcgoodfoodme.com/recipes/cobb-salad-bowls', steps_summary: "1. 달걀은 소금물에 7분쯤 삶아 찬물에 식힌 뒤 껍질을 벗긴다.\n2. 베이컨은 양면이 바삭하도록 구워 식힌다.\n3. 올리브유, 식초, 디종 머스터드에 설탕을 아주 조금 넣어 걸쭉해질 때까지 섞는다.\n4. 상추를 반으로 갈라 그릇에 담고 아보카도, 토마토, 닭고기, 베이컨, 반으로 자른 달걀을 올린다.\n5. 드레싱을 뿌리고 후추로 마무리한다.", ingredients: [
+      { name: '달걀', qty: 1, unit: '개' }, { name: '베이컨', qty: 2, unit: '줄' },
+      { name: '올리브유', qty: 2, unit: '큰술' }, { name: '식초', qty: 1, unit: '큰술' },
+      { name: '디종 머스터드', qty: 0.5, unit: '큰술' }, { name: '리틀젬 상추', qty: 1, unit: '개' },
+      { name: '아보카도', qty: 0.25, unit: '개' }, { name: '토마토', qty: 1.5, unit: '개' },
+      { name: '조리된 닭가슴살', qty: 75, unit: 'g' } ] },
+  { name: '니수아즈 샐러드', minutes: 25, source_name: 'Food Network (Geoffrey Zakarian)', source_url: 'https://www.foodnetwork.com/fnk/recipes/salade-nicoise-7566257.amp', steps_summary: "1. 달걀은 10분쯤 삶아 찬물에 식힌 뒤 껍질을 벗기고 4등분한다.\n2. 껍질콩은 3분쯤 데쳐 찬물에 식히고 물기를 뺀다.\n3. 식초와 머스터드를 섞고 올리브유를 천천히 부어 드레싱을 만든다.\n4. 감자는 삶아 얇게 썰어 드레싱에 버무린다.\n5. 상추 위에 감자, 껍질콩, 토마토, 참치를 올리고 달걀, 안초비, 올리브를 얹는다.", ingredients: [
+      { name: '달걀', qty: 1, unit: '개' }, { name: '껍질콩', qty: 30, unit: 'g' },
+      { name: '식초', qty: 1, unit: '큰술' }, { name: '디종 머스터드', qty: 0.25, unit: '큰술' },
+      { name: '올리브유', qty: 2, unit: '큰술' }, { name: '햇감자', qty: 85, unit: 'g' },
+      { name: '상추', qty: 60, unit: 'g' }, { name: '방울토마토', qty: 55, unit: 'g' },
+      { name: '참치캔', qty: 85, unit: 'g' }, { name: '안초비', qty: 2, unit: '개' },
+      { name: '올리브', qty: 20, unit: 'g' } ] },
+  { name: '카프레제 샐러드', minutes: 10, source_name: 'Food Network (Gesine Bullock-Prado)', source_url: 'https://www.foodnetwork.com/recipes/caprese-salad-5273751.amp', steps_summary: "1. 토마토와 모차렐라를 얇게 썬다.\n2. 접시에 토마토와 치즈를 번갈아 겹쳐 펼친다.\n3. 올리브유와 발사믹 식초를 뿌린다.\n4. 바질 잎을 찢어 올리고 소금, 후추로 간한다.", ingredients: [
+      { name: '토마토', qty: 0.5, unit: '개' }, { name: '생모차렐라', qty: 45, unit: 'g' },
+      { name: '바질', qty: 4, unit: '장' }, { name: '올리브유', qty: 1, unit: '큰술' },
+      { name: '발사믹 식초', qty: 1, unit: '큰술' } ] },
+  { name: '그릭 병아리콩 샐러드', minutes: 15, source_name: 'BBC Good Food Middle East', source_url: 'https://bbcgoodfoodme.com/recipes/greek-chickpea-salad-melting-feta', steps_summary: "1. 식초, 기름, 오레가노를 큰 볼에 섞는다.\n2. 병아리콩, 적양파, 오이, 올리브, 토마토를 올리되 아직 버무리지 않는다.\n3. 페타치즈에 밀가루와 커민을 묻혀 기름 두른 팬에서 모든 면을 짧게 굽는다.\n4. 샐러드를 버무려 담고 구운 페타치즈를 올린다.", ingredients: [
+      { name: '병아리콩', qty: 90, unit: 'g' }, { name: '적양파', qty: 0.5, unit: '개' },
+      { name: '오이', qty: 0.5, unit: '개' }, { name: '올리브', qty: 20, unit: 'g' },
+      { name: '토마토', qty: 1.5, unit: '개' }, { name: '페타치즈', qty: 50, unit: 'g' },
+      { name: '올리브유', qty: 0.5, unit: '큰술' }, { name: '식초', qty: 0.5, unit: '큰술' } ] },
+  { name: '시저 샐러드', minutes: 30, source_name: 'Food Network Kitchen', source_url: 'https://www.foodnetwork.com/recipes/food-network-kitchen/the-best-caesar-salad-8037173.amp', steps_summary: "1. 오븐을 200도로 예열한다.\n2. 올리브유와 버터에 마늘 향을 우려 빵에 입히고, 노릇하게 구운 뒤 파르메산과 후추를 뿌려 식힌다.\n3. 안초비는 물에 담가 짠맛을 뺀 뒤 마늘과 함께 곱게 다진다.\n4. 안초비, 노른자, 머스터드, 레몬즙을 섞고 올리브유를 조금씩 부어 걸쭉하게 만든 뒤 파르메산을 넣는다.\n5. 물기를 뺀 로메인과 크루통을 드레싱에 버무리고 파르메산을 올린다. 드레싱에 날달걀 노른자가 들어가며, 1인분 양이 적어 2인분을 만들어 나눠 쓰는 편이 편하다.", ingredients: [
+      { name: '로메인', qty: 0.5, unit: '개' }, { name: '올리브유', qty: 2.5, unit: '큰술' },
+      { name: '버터', qty: 0.5, unit: '큰술' }, { name: '마늘', qty: 1, unit: '개' },
+      { name: '식빵', qty: 20, unit: 'g' }, { name: '파르메산치즈', qty: 2, unit: '큰술' },
+      { name: '안초비', qty: 1, unit: '개' }, { name: '레몬즙', qty: 0.5, unit: '큰술' } ] }
+];
+
+const DAYS = ['월', '화', '수', '목', '금'];
+const MEALS_PER_WEEK = 5;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtQty = (n) => String(Math.round(Number(n) * 100) / 100);
+const pad = (n) => String(n).padStart(2, '0');
+
+/* 주 시작일(월요일): 일요일에 열면 곧 시작되는 월요일, 그 외에는 이번 주 월요일 */
+function weekStart(today) {
+  const d = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const dow = d.getDay();
+  d.setDate(d.getDate() + (dow === 0 ? 1 : -(dow - 1)));
+  return d;
+}
+const WEEK = weekStart(new Date());
+const WEEK_KEY = WEEK.getFullYear() + '-' + pad(WEEK.getMonth() + 1) + '-' + pad(WEEK.getDate());
+
+/* 화면 상태 */
+const state = { user: null, recipes: [], plan: [], items: [], busy: false, loaded: false, detailId: null,
+  ext: null, xq: '', xresults: [], xtotal: 0, xleft: null, xsaved: [], xbusy: false, xsaving: false, xsearched: false, xid: null, xdetail: null, xerr: '' };
+
+const configured = SUPABASE_URL.indexOf('https://') === 0 && SUPABASE_PUBLISHABLE_KEY.indexOf('여기에') === -1 && SUPABASE_PUBLISHABLE_KEY.length > 20;
+let sb = null;
+
+function say(text, isError) {
+  const el = $('msg');
+  el.textContent = text || '';
+  el.className = 'msg' + (isError ? ' error' : '');
+}
+
+function showView(name) {
+  $('view-config').hidden = name !== 'config';
+  $('view-conn').hidden = name !== 'conn';
+  $('view-app').hidden = name !== 'app';
+  $('view-detail').hidden = name !== 'detail';
+  $('view-ext').hidden = name !== 'ext';
+  $('view-xd').hidden = name !== 'xd';
+}
+
+/* 로그인 상태에서는 목록, 상세, 외부 레시피 중 하나를 보여준다 */
+function applyView() {
+  if (!state.user) return;
+  if (state.detailId) showView('detail');
+  else if (state.ext) showView(state.ext.mode === 'detail' ? 'xd' : 'ext');
+  else showView('app');
+}
+
+/* ---------------- 데이터 처리 ---------------- */
+
+/* 카드에 보여줄 주요 재료: 양념(큰술 단위)을 뺀 앞의 3개 */
+function mainIngredients(recipe) {
+  const list = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
+  return list.filter((i) => i.unit !== '큰술').slice(0, 3).map((i) => i.name);
+}
+
+function pickRecipes(pool, count) {
+  const a = pool.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, count);
+}
+
+/* 선택한 레시피의 재료를 이름+단위 기준으로 합산 */
+function buildShopping(recipes) {
+  const map = new Map();
+  recipes.forEach((r) => (Array.isArray(r.ingredients) ? r.ingredients : []).forEach((ing) => {
+    const key = ing.name + '|' + ing.unit;
+    if (map.has(key)) map.get(key).qty += Number(ing.qty);
+    else map.set(key, { name: ing.name, unit: ing.unit, qty: Number(ing.qty) });
+  }));
+  return Array.from(map.values());
+}
+
+async function loadAll() {
+  const [r, p, s] = await Promise.all([
+    sb.from('recipes').select('*').order('created_at', { ascending: true }),
+    sb.from('weekly_plans').select('id, weekday, recipe_id, eaten').eq('week_start', WEEK_KEY).order('weekday', { ascending: true }),
+    sb.from('shopping_items').select('id, name, qty, unit, purchased').eq('week_start', WEEK_KEY).order('name', { ascending: true })
+  ]);
+  const err = r.error || p.error || s.error;
+  if (err) throw err;
+  state.recipes = r.data || [];
+  state.plan = (p.data || [])
+    .map((row) => ({ id: row.id, weekday: row.weekday, eaten: row.eaten, recipe: state.recipes.find((x) => x.id === row.recipe_id) }))
+    .filter((x) => x.recipe);
+  state.items = (s.data || []).map((row) => ({ id: row.id, name: row.name, qty: Number(row.qty), unit: row.unit, purchased: row.purchased }));
+  state.loaded = true;
+  if (state.recipes.length > 0 && !toppedUp) {
+    toppedUp = true; /* 동시 호출로 중복 삽입되는 것을 막는다 */
+    try { if (await topUpSources()) await loadAll(); } catch (_) { toppedUp = false; }
+  }
+}
+let toppedUp = false;
+
+/* 기능 1: 추천받기 -> 5끼 계획과 합산 장보기 목록을 저장 */
+async function recommend() {
+  if (state.busy) return;
+  if (state.recipes.length < MEALS_PER_WEEK) {
+    say('레시피가 ' + MEALS_PER_WEEK + '개 이상 있어야 추천할 수 있습니다.', true);
+    return;
+  }
+  state.busy = true; render(); say('추천을 만들고 저장하는 중입니다.');
+  try {
+    const picked = pickRecipes(state.recipes, MEALS_PER_WEEK);
+    const items = buildShopping(picked);
+
+    let res = await sb.from('weekly_plans').delete().eq('week_start', WEEK_KEY);
+    if (res.error) throw res.error;
+    res = await sb.from('shopping_items').delete().eq('week_start', WEEK_KEY);
+    if (res.error) throw res.error;
+
+    res = await sb.from('weekly_plans').insert(
+      picked.map((r, i) => ({ week_start: WEEK_KEY, weekday: i + 1, recipe_id: r.id, eaten: false }))
+    );
+    if (res.error) throw res.error;
+    res = await sb.from('shopping_items').insert(
+      items.map((it) => ({ week_start: WEEK_KEY, name: it.name, qty: it.qty, unit: it.unit, purchased: false }))
+    );
+    if (res.error) throw res.error;
+
+    await loadAll();
+    say('이번 주 5끼를 저장했습니다.');
+  } catch (e) {
+    say('저장하지 못했습니다: ' + (e.message || e), true);
+    try { await loadAll(); } catch (_) { /* 무시 */ }
+  } finally {
+    state.busy = false; render();
+  }
+}
+
+/* 기능 2: 먹음 체크 저장 */
+async function setEaten(planId, value) {
+  const entry = state.plan.find((x) => x.id === planId);
+  if (!entry) return;
+  const before = entry.eaten;
+  entry.eaten = value; render(planId);
+  const { error } = await sb.from('weekly_plans').update({ eaten: value }).eq('id', planId);
+  if (error) { entry.eaten = before; render(planId); say('먹음 체크를 저장하지 못했습니다: ' + error.message, true); }
+  else say('');
+}
+
+/* 기능 3: 구매 체크 저장 */
+async function setPurchased(itemId, value) {
+  const item = state.items.find((x) => x.id === itemId);
+  if (!item) return;
+  const before = item.purchased;
+  item.purchased = value; render(itemId);
+  const { error } = await sb.from('shopping_items').update({ purchased: value }).eq('id', itemId);
+  if (error) { item.purchased = before; render(itemId); say('구매 체크를 저장하지 못했습니다: ' + error.message, true); }
+  else say('');
+}
+
+async function topUpSources() {
+  /* 이미 샘플이 있는 계정에 출처 있는 새 레시피만 추가 */
+  const have = new Set(state.recipes.map((r) => r.name));
+  const missing = SEED.filter((r) => r.source_url && !have.has(r.name));
+  if (!missing.length) return false;
+  const { error } = await sb.from('recipes').insert(missing.map((r) => ({
+    name: r.name, minutes: r.minutes, ingredients: r.ingredients, steps_summary: r.steps_summary,
+    source_name: r.source_name, source_url: r.source_url
+  })));
+  if (error) throw error;
+  return true;
+}
+
+async function insertSamples() {
+  if (state.busy) return;
+  state.busy = true; render(); say('샘플 레시피를 넣는 중입니다.');
+  try {
+    const { error } = await sb.from('recipes').insert(SEED.map((r) => ({
+      name: r.name, minutes: r.minutes, ingredients: r.ingredients, steps_summary: r.steps_summary,
+      source_name: r.source_name || null, source_url: r.source_url || null
+    })));
+    if (error) throw error;
+    await loadAll();
+    say('샘플 레시피 ' + SEED.length + '개를 넣었습니다.');
+  } catch (e) {
+    say('넣지 못했습니다: ' + (e.message || e), true);
+  } finally {
+    state.busy = false; render();
+  }
+}
+
+/* ---------------- 화면 그리기 ---------------- */
+
+function render(focusId) {
+  /* 상세로 보던 계획이 사라졌으면 목록으로 돌아간다 */
+  if (state.detailId && state.loaded && !state.plan.some((x) => x.id === state.detailId)) {
+    state.detailId = null;
+    applyView();
+  }
+  $('week-label').textContent = (WEEK.getMonth() + 1) + '월 ' + WEEK.getDate() + '일 월요일 시작 주';
+
+  const hasPlan = state.plan.length > 0;
+  const noRecipes = state.loaded && state.recipes.length === 0;
+
+  const btn = $('btn-recommend');
+  btn.disabled = state.busy || !state.loaded;
+  if (noRecipes) {
+    btn.textContent = '샘플 레시피 ' + SEED.length + '개 넣기';
+    btn.classList.add('secondary');
+  } else {
+    btn.textContent = hasPlan ? '다시 추천받기' : '이번 주 추천받기';
+    btn.classList.remove('secondary');
+  }
+
+  const cards = $('cards');
+  if (!state.loaded) {
+    cards.innerHTML = '<div class="empty">불러오는 중입니다.</div>';
+  } else if (noRecipes) {
+    cards.innerHTML = '<div class="empty">저장된 레시피가 없습니다. 위 버튼으로 샘플을 넣거나, Supabase의 recipes 테이블에 직접 입력해 주세요.</div>';
+  } else if (!hasPlan) {
+    cards.innerHTML = '<div class="empty">"이번 주 추천받기"를 누르면 5끼가 여기에 나옵니다.</div>';
+  } else {
+    cards.innerHTML = state.plan.map((e) => {
+      const r = e.recipe;
+      const url = r.source_url && /^https?:\/\//.test(r.source_url) ? r.source_url : '';
+      const src = url
+        ? '<p class="src">영감 출처: <a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(r.source_name || '원문 보기') + '</a></p>'
+        : '';
+      return '<article class="card glass' + (e.eaten ? ' done' : '') + '">' +
+        '<div class="card-top"><span class="day">' + (DAYS[e.weekday - 1] || '') + '요일</span>' +
+        '<label class="check"><input type="checkbox" data-eaten="' + esc(e.id) + '"' + (e.eaten ? ' checked' : '') + '>먹음</label></div>' +
+        '<h3><button type="button" class="card-link" data-open="' + esc(e.id) + '">' + esc(r.name) + '<span class="chev" aria-hidden="true"></span></button></h3>' +
+        '<p class="meta">조리 ' + esc(r.minutes) + '분</p>' +
+        '<div class="tags">' + mainIngredients(r).map((m) => '<span class="tag">' + esc(m) + '</span>').join('') + '</div>' +
+        src + '</article>';
+    }).join('');
+  }
+
+  const eatenCount = state.plan.filter((e) => e.eaten).length;
+  const boughtCount = state.items.filter((it) => it.purchased).length;
+  $('stat-eaten').innerHTML = eatenCount + '<small> / ' + state.plan.length + '</small>';
+  $('stat-bought').innerHTML = boughtCount + '<small> / ' + state.items.length + '</small>';
+
+  $('shop-count').textContent = state.items.length
+    ? '5끼 재료를 합산한 목록입니다.'
+    : '추천을 받으면 5끼 재료가 합산되어 여기에 나옵니다.';
+  $('shop-list').innerHTML = state.items.map((it) =>
+    '<li><label class="row' + (it.purchased ? ' bought' : '') + '">' +
+    '<input type="checkbox" data-bought="' + esc(it.id) + '"' + (it.purchased ? ' checked' : '') + '>' +
+    '<span class="name">' + esc(it.name) + '</span>' +
+    '<span class="qty">' + fmtQty(it.qty) + esc(it.unit) + '</span></label></li>'
+  ).join('');
+
+  $('note').textContent = '체크와 추천 결과는 이 브라우저에 연결되어 저장됩니다. 다시 열어도 이번 주 목록이 그대로 보이지만, 브라우저 데이터를 지우거나 다른 기기에서 열면 새로 시작됩니다.';
+
+  if (state.detailId) renderDetail();
+  if (state.ext) xrender();
+
+  /* 다시 그린 뒤에도 키보드 포커스 유지 */
+  if (focusId && !state.detailId) {
+    const el = document.querySelector('input[data-eaten="' + focusId + '"], input[data-bought="' + focusId + '"]');
+    if (el) el.focus();
+  }
+}
+
+/* ---------------- 레시피 상세 ---------------- */
+
+function renderDetail() {
+  const e = state.plan.find((x) => x.id === state.detailId);
+  if (!e) return;
+  const r = e.recipe;
+  $('d-day').textContent = (DAYS[e.weekday - 1] || '') + '요일';
+  $('d-name').textContent = r.name;
+  $('d-meta').textContent = '조리 ' + r.minutes + '분';
+
+  const ings = Array.isArray(r.ingredients) ? r.ingredients : [];
+  $('d-ing').innerHTML = ings.map((i) =>
+    '<li><span class="name">' + esc(i.name) + '</span><span class="qty">' + fmtQty(i.qty) + esc(i.unit) + '</span></li>'
+  ).join('');
+
+  const steps = (r.steps_summary || '').trim();
+  const st = $('d-steps');
+  st.textContent = steps || '조리법 요약이 아직 입력되지 않았습니다.';
+  st.className = 'd-steps' + (steps ? '' : ' none');
+
+  const url = r.source_url && /^https?:\/\//.test(r.source_url) ? r.source_url : '';
+  $('d-src').innerHTML = url
+    ? '영감 출처: <a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--burgundy)">' + esc(r.source_name || '원문 보기') + '</a>'
+    : '';
+
+  $('d-eaten').checked = !!e.eaten;
+}
+
+function openDetail(planId) {
+  state.detailId = planId;
+  history.pushState({ d: planId }, '');
+  applyView(); render();
+  window.scrollTo(0, 0);
+  $('btn-back').focus();
+}
+
+function closeDetail() {
+  if (history.state && history.state.d) history.back();   /* popstate에서 정리 */
+  else { state.detailId = null; applyView(); render(); window.scrollTo(0, 0); }
+}
+
+/* ---------------- 외부 레시피 (Spoonacular) ----------------
+   약관상 재료·조리법은 저장할 수 없다. Supabase에는 번호, 제목, 이미지 주소만 두고,
+   상세는 열 때마다 서버 함수(/api/spoonacular)에서 불러온다. 아래 xcache는 이 탭이 열려 있는 동안만 쓰는 메모리다. */
+
+const X_API = '/api/spoonacular';
+const xcache = new Map();
+const safeImg = (u) => (u && /^https:\/\//.test(u) ? u : '');
+const safeUrl = (u) => (u && /^https?:\/\//.test(u) ? u : '');
+
+async function xfetch(params) {
+  let res, data = null;
+  try { res = await fetch(X_API + '?' + new URLSearchParams(params)); }
+  catch (_) { throw new Error('서버 함수에 연결하지 못했습니다.'); }
+  try { data = await res.json(); } catch (_) { /* 본문 없음 */ }
+  if (res.status === 404) throw new Error('서버 함수(/api/spoonacular)가 아직 배포되지 않았습니다.');
+  if (!res.ok) throw new Error((data && data.error) || ('요청에 실패했습니다 (' + res.status + ')'));
+  if (data && typeof data.quotaLeft === 'number') state.xleft = data.quotaLeft;
+  return data;
+}
+
+async function xloadSaved() {
+  const { data, error } = await sb.from('external_recipes')
+    .select('id, external_id, title, image_url').order('created_at', { ascending: false });
+  if (error) throw error;
+  state.xsaved = data || [];
+}
+const xSavedRow = (extId) => state.xsaved.find((s) => Number(s.external_id) === Number(extId));
+
+async function xsearch(more) {
+  if (state.xbusy) return;
+  state.xbusy = true; state.xerr = ''; xrender();
+  try {
+    const q = more ? state.xq : $('x-q').value.trim();
+    const d = await xfetch({ action: 'search', q, offset: more ? state.xresults.length : 0 });
+    state.xq = q;
+    state.xresults = more ? state.xresults.concat(d.results) : d.results;
+    state.xtotal = d.total;
+    state.xsearched = true;
+  } catch (e) { state.xerr = e.message; }
+  finally { state.xbusy = false; xrender(); }
+}
+
+async function xloadDetail(id) {
+  state.xid = id; state.xerr = '';
+  if (xcache.has(id)) { state.xdetail = xcache.get(id); xrender(); return; }
+  state.xdetail = null; state.xbusy = true; xrender();
+  try {
+    const d = await xfetch({ action: 'detail', id });
+    xcache.set(id, d);
+    if (state.xid === id) state.xdetail = d;
+  } catch (e) { if (state.xid === id) state.xerr = e.message; }
+  finally { state.xbusy = false; xrender(); }
+}
+
+async function xtoggleSave() {
+  const d = state.xdetail;
+  if (!d || state.xsaving) return;
+  state.xsaving = true; xrender();
+  try {
+    const row = xSavedRow(d.id);
+    if (row) {
+      const { error } = await sb.from('external_recipes').delete().eq('id', row.id);
+      if (error) throw error;
+    } else {
+      const { error } = await sb.from('external_recipes').insert({
+        provider: 'spoonacular', external_id: d.id, title: String(d.title).slice(0, 300), image_url: safeImg(d.image) || null
+      });
+      if (error && error.code !== '23505') throw error;   /* 23505: 이미 보관됨 */
+    }
+    await xloadSaved();
+    say('');
+  } catch (e) { say('보관 상태를 바꾸지 못했습니다: ' + (e.message || e), true); }
+  finally { state.xsaving = false; xrender(); }
+}
+
+async function xdelete(rowId) {
+  const { error } = await sb.from('external_recipes').delete().eq('id', rowId);
+  if (error) { say('삭제하지 못했습니다: ' + error.message, true); return; }
+  try { await xloadSaved(); say(''); } catch (e) { say('목록을 새로 불러오지 못했습니다: ' + (e.message || e), true); }
+  xrender();
+}
+
+function xrow(id, title, img, extra) {
+  const im = safeImg(img);
+  return '<li class="x-item">' +
+    (im ? '<img class="x-thumb" loading="lazy" referrerpolicy="no-referrer" alt="" src="' + esc(im) + '">' : '<span class="x-thumb" aria-hidden="true"></span>') +
+    '<button type="button" class="card-link" data-xopen="' + esc(id) + '">' + esc(title) + '<span class="chev" aria-hidden="true"></span></button>' +
+    extra + '</li>';
+}
+
+function xquotaText() {
+  return typeof state.xleft === 'number' ? ' 오늘 남은 무료 한도는 약 ' + Math.floor(state.xleft) + '포인트입니다.' : '';
+}
+
+function xrender() {
+  if (!state.ext) return;
+
+  if (state.ext.mode === 'list') {
+    $('x-go').disabled = state.xbusy;
+    const st = $('x-status');
+    st.className = 'msg x-status' + (state.xerr ? ' error' : '');
+    if (state.xbusy) st.textContent = '불러오는 중입니다.';
+    else if (state.xerr) st.textContent = state.xerr;
+    else if (state.xsearched) st.textContent = state.xresults.length ? '총 ' + state.xtotal + '개 중 ' + state.xresults.length + '개를 보여드립니다.' + xquotaText() : '결과가 없습니다. 다른 영어 단어로 검색해 보세요.';
+    else st.textContent = '영어로 검색하세요. 비워 두고 검색하면 샐러드 전체에서 불러옵니다. 검색과 상세 보기는 한도를 씁니다.';
+
+    $('x-results').innerHTML = state.xresults.map((r) =>
+      xrow(r.id, r.title, r.image, xSavedRow(r.id) ? '<span class="tag">보관됨</span>' : '')).join('');
+    $('x-more').hidden = state.xbusy || state.xresults.length >= state.xtotal;
+
+    $('x-saved').innerHTML = state.xsaved.map((s) =>
+      xrow(s.external_id, s.title, s.image_url, '<button type="button" class="link-btn" data-xdel="' + esc(s.id) + '">삭제</button>')).join('');
+    $('x-saved-empty').hidden = state.xsaved.length > 0;
+    return;
+  }
+
+  /* 상세 */
+  const d = state.xdetail;
+  const st = $('xd-status');
+  st.className = 'msg' + (state.xerr ? ' error' : '');
+  st.textContent = state.xerr || (state.xbusy && !d ? '불러오는 중입니다.' : '');
+  $('xd-body').hidden = !d;
+  $('xd-name').textContent = d ? d.title : '';
+  if (!d) { $('xd-meta').textContent = ''; return; }
+
+  $('xd-meta').textContent = [d.minutes ? '조리 ' + d.minutes + '분' : '', d.servings ? d.servings + '인분 기준' : ''].filter(Boolean).join(' · ');
+  const im = safeImg(d.image);
+  $('xd-img').hidden = !im;
+  if (im) $('xd-img').src = im;
+
+  $('xd-ing').innerHTML = d.ingredients.map((i) =>
+    '<li><span class="name">' + esc(i.name) + '</span><span class="qty">' + (i.amount ? fmtQty(i.amount) + ' ' + esc(i.unit) : esc(i.unit)) + '</span></li>').join('');
+  $('xd-steps').innerHTML = d.steps.length
+    ? d.steps.map((s) => '<li>' + esc(s) + '</li>').join('')
+    : '<li style="list-style:none;color:var(--muted)">조리법이 제공되지 않은 레시피입니다. 아래 원문 출처에서 확인해 주세요.</li>';
+
+  const url = safeUrl(d.sourceUrl);
+  $('xd-src').innerHTML = url
+    ? '원문 출처: <a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--burgundy)">' + esc(d.sourceName || '원문 보기') + '</a>'
+    : (d.sourceName ? '원문 출처: ' + esc(d.sourceName) : '');
+
+  const saved = !!xSavedRow(d.id);
+  const btn = $('xd-save');
+  btn.disabled = state.xsaving;
+  btn.textContent = saved ? '보관 해제' : '보관하기';
+}
+
+function openExt() {
+  state.ext = { mode: 'list' };
+  history.pushState({ x: 'list' }, '');
+  applyView(); render(); window.scrollTo(0, 0);
+  $('x-q').focus();
+}
+
+function openExtDetail(id) {
+  state.ext = { mode: 'detail', id };
+  history.pushState({ x: 'detail', id }, '');
+  applyView(); window.scrollTo(0, 0);
+  xloadDetail(id);
+  $('xd-back').focus();
+}
+
+function closeExt() {
+  if (history.state && history.state.x) history.back();   /* popstate에서 정리 */
+  else { state.ext = null; applyView(); render(); window.scrollTo(0, 0); }
+}
+
+/* ---------------- 로그인 ---------------- */
+
+/* 로그인 화면 없이, 방문한 브라우저마다 익명 계정을 자동으로 만들어 쓴다 */
+let signingIn = false;
+async function ensureSession() {
+  if (signingIn) return;
+  signingIn = true;
+  showView('app'); render(); say('연결하는 중입니다.');
+  const { error } = await sb.auth.signInAnonymously();
+  signingIn = false;
+  if (error) {
+    say('');
+    $('conn-text').textContent = '서버에 연결하지 못했습니다: ' + error.message +
+      ' (Supabase의 Authentication > Sign In / Providers에서 Anonymous Sign-Ins가 켜져 있는지 확인해 주세요.)';
+    showView('conn');
+  }
+  /* 성공하면 onAuthStateChange의 SIGNED_IN에서 이어진다 */
+}
+
+async function handleSession(session) {
+  const user = session && session.user ? session.user : null;
+  if (!user) { state.user = null; state.started = false; ensureSession(); return; }
+  if (state.started && state.user && state.user.id === user.id) return;
+  state.started = true;
+  state.user = user;
+  state.recipes = []; state.plan = []; state.items = []; state.loaded = false; state.detailId = null;
+  state.ext = null; state.xsaved = []; state.xresults = []; state.xsearched = false; state.xdetail = null; state.xerr = '';
+
+  applyView(); render(); say('');
+  try {
+    await loadAll();
+  } catch (e) {
+    say('목록을 불러오지 못했습니다: ' + (e.message || e), true);
+  }
+  try { await xloadSaved(); } catch (_) { /* 외부 레시피 표를 못 읽어도 나머지 기능은 그대로 쓴다 */ }
+  render();
+}
+
+/* ---------------- 시작 ---------------- */
+
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (!t.dataset) return;
+  if (t.id === 'd-eaten') { if (state.detailId) setEaten(state.detailId, t.checked); }
+  else if (t.dataset.eaten) setEaten(t.dataset.eaten, t.checked);
+  else if (t.dataset.bought) setPurchased(t.dataset.bought, t.checked);
+});
+
+document.addEventListener('click', (ev) => {
+  const o = ev.target.closest && ev.target.closest('[data-open]');
+  if (o) openDetail(o.dataset.open);
+  const xo = ev.target.closest && ev.target.closest('[data-xopen]');
+  if (xo) openExtDetail(xo.dataset.xopen);
+  const xd = ev.target.closest && ev.target.closest('[data-xdel]');
+  if (xd) xdelete(xd.dataset.xdel);
+});
+$('btn-back').addEventListener('click', closeDetail);
+$('btn-ext').addEventListener('click', openExt);
+$('x-back').addEventListener('click', closeExt);
+$('xd-back').addEventListener('click', closeExt);
+$('x-form').addEventListener('submit', (e) => { e.preventDefault(); xsearch(false); });
+$('x-more').addEventListener('click', () => xsearch(true));
+$('xd-save').addEventListener('click', xtoggleSave);
+window.addEventListener('popstate', (ev) => {
+  const prev = state.detailId;
+  const prevExt = state.ext;
+  const st = ev.state || {};
+  state.detailId = st.d || null;
+  state.ext = st.x === 'list' ? { mode: 'list' } : st.x === 'detail' ? { mode: 'detail', id: st.id } : null;
+  if (!state.user) return;
+  applyView(); render();
+  window.scrollTo(0, 0);
+  if (state.ext && state.ext.mode === 'detail') xloadDetail(state.ext.id);
+  if (!state.ext && prevExt) { $('btn-ext').focus(); return; }
+  if (!state.detailId && prev) {
+    const back = document.querySelector('[data-open="' + prev + '"]');
+    if (back) back.focus();
+  } else if (state.detailId) {
+    $('btn-back').focus();
+  }
+});
+
+if (!configured || !window.supabase) {
+  showView('config');
+  if (configured && !window.supabase) say('Supabase 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.', true);
+} else {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  $('btn-retry').addEventListener('click', () => { signingIn = false; ensureSession(); });
+  $('btn-recommend').addEventListener('click', () => {
+    if (state.loaded && state.recipes.length === 0) insertSamples();
+    else recommend();
+  });
+  /* 콜백 안에서 바로 Supabase를 호출하면 교착이 생길 수 있어 다음 틱으로 넘긴다 */
+  sb.auth.onAuthStateChange((_event, session) => { setTimeout(() => handleSession(session), 0); });
+}
+</script>
+</body>
+</html>
